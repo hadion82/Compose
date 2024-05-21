@@ -99,7 +99,11 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(project(":shared"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:shared"))
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+
+    implementation(project(":features:home"))
+    implementation(project(":features:bookmarks"))
 }

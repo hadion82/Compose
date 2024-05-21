@@ -49,7 +49,7 @@ android {
 }
 
 fun getApiKey(propertyKey: String): String =
-    gradleLocalProperties(rootDir).getProperty(propertyKey)
+    gradleLocalProperties(rootProject.rootDir, providers).getProperty(propertyKey)
 
 dependencies {
 
