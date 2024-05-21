@@ -20,18 +20,16 @@ class BookmarkViewModel @Inject constructor(
     loadBookmarkUseCase: LoadBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
     private val saveThumbnailUseCase: SaveThumbnailUseCase,
-) : ViewModel(), BookmarkPresenter {
+) : ViewModel(), UiState, BookmarkPresenter {
 
     private val _pagingData: MutableStateFlow<Flow<PagingData<MarvelCharacter>>?> =
         MutableStateFlow(null)
-    override val pagingData: State<Flow<PagingData<MarvelCharacter>>?>
-        @Composable
-        get() = _pagingData.collectAsStateWithLifecycle()
+    override val pagingData: StateFlow<Flow<PagingData<MarvelCharacter>>?>
+        get() = _pagingData
 
     private val _message: MutableStateFlow<Action.Message?> = MutableStateFlow(null)
-    override val message: State<Action.Message?>
-        @Composable
-        get() = _message.collectAsStateWithLifecycle()
+    override val message: StateFlow<Action.Message?>
+        get() = _message
 
     init {
         viewModelScope.launch {

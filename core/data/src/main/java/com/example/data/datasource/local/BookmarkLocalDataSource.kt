@@ -3,17 +3,17 @@ package com.example.data.datasource.local
 import androidx.annotation.IntRange
 import androidx.paging.PagingSource
 import com.example.database.model.BookmarkEntity
-import com.example.database.model.MarvelCharacter
+import com.example.database.model.CharacterEntity
 import kotlinx.coroutines.flow.Flow
 
-interface BookmarkLocalDataSource {
+internal interface BookmarkLocalDataSource {
 
     suspend fun insert(
         vararg values: BookmarkEntity
     )
 
     suspend fun update(
-        values: List<MarvelCharacter>
+        values: List<CharacterEntity>
     )
 
     suspend fun getBookmarksById(ids: List<Int>): List<BookmarkEntity>

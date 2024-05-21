@@ -7,22 +7,32 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.example.model.MarvelCharacter
 import com.example.ui.common.CharacterContent
 import com.example.ui.theme.ComposeTheme
 import com.example.ui.theme.DefaultSurface
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @Composable
 fun TitleBar() {
@@ -38,10 +48,12 @@ fun TitleBar() {
 
 @Composable
 fun BookmarkContents(
-    presenter: BookmarkPresenter
+    pagingDataState: State<Flow<PagingData<MarvelCharacter>>?>,
+    onThumbnailClick: (url: String?) -> Unit,
+    onBookmarkClick: (item: MarvelCharacter) -> Unit
 ) {
-    val pagingData by presenter.pagingData
-    val pagingItems = pagingData?.collectAsLazyPagingItems() ?: return
+    val pagingDataStateValue by pagingDataState
+    val pagingItems = pagingDataStateValue?.collectAsLazyPagingItems() ?: return
     LazyColumn(
         contentPadding = PaddingValues(16.dp, 8.dp),
         modifier = Modifier.fillMaxSize()
@@ -53,12 +65,33 @@ fun BookmarkContents(
             pagingItems[position]?.let { characterItem ->
                 CharacterContent(
                     characterItem,
-                    onThumbnailClick = presenter::onThumbnailClick,
-                    onBookmarkClick = presenter::onBookmarkClick
+                    onThumbnailClick = onThumbnailClick,
+                    onBookmarkClick = onBookmarkClick
                 )
                 HorizontalDivider()
             }
         }
+    }
+}
+
+@Composable
+fun SnackBarMessage(
+    messageState: State<Action.Message?>,
+    snackBarHostState: SnackbarHostState
+) {
+    val stateValue = messageState.value ?: return
+    val scope = rememberCoroutineScope()
+    val message = stringResource(
+        when (stateValue) {
+            is Action.Message.FailedToLoadData -> R.string.failed_to_load_data
+            is Action.Message.FailedToRemoveBookmark -> R.string.failed_to_delete_bookmark
+            is Action.Message.SuccessToSaveImage -> R.string.image_saved_successfully
+            is Action.Message.FailedToSaveImage -> R.string.failed_to_save_image
+        }
+    )
+    scope.launch {
+        snackBarHostState
+            .showSnackbar(message = message, duration = SnackbarDuration.Short)
     }
 }
 
@@ -81,16 +114,31 @@ fun ToastMessage(
 
 @Composable
 fun BookmarkScreen(
+    uiState: BookmarkComposableUiState,
     presenter: BookmarkPresenter
 ) {
     ComposeTheme {
         DefaultSurface {
-            Column(
-                Modifier.fillMaxSize()
-            ) {
-                TitleBar()
-                BookmarkContents(presenter)
-                ToastMessage(presenter.message)
+            Scaffold(snackbarHost = {
+                SnackbarHost(uiState.snackBarHostState)
+            }) { paddingValues ->
+                Column(
+                    Modifier.fillMaxSize().statusBarsPadding()
+                        .padding(
+                            start = paddingValues.calculateTopPadding(),
+                            top = 0.dp,
+                            end = 0.dp,
+                            bottom = paddingValues.calculateBottomPadding()
+                        )
+                ) {
+                    TitleBar()
+                    BookmarkContents(
+                        uiState.pagingData,
+                        presenter::onThumbnailClick,
+                        presenter::onBookmarkClick
+                    )
+                    SnackBarMessage(uiState.message, uiState.snackBarHostState)
+                }
             }
         }
     }

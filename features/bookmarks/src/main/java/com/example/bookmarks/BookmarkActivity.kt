@@ -17,13 +17,16 @@ class BookmarkActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BookmarkScreen(presenter = viewModel)
+            BookmarkRoute(
+                uiState = ComposeBookmarkUiState(viewModel),
+                presenter = viewModel
+            )
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    BookmarkScreen(presenter = BookmarkPresenter.default())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    BookmarkScreen(presenter = BookmarkPresenter.default())
+//}

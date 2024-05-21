@@ -11,9 +11,9 @@ import com.example.data.datasource.local.PagingKeyDataSourceImpl
 import com.example.data.datasource.remote.CharacterRemoteDataSource
 import com.example.data.datasource.remote.CharacterRemoteDataSourceImpl
 import com.example.data.mapper.BookMarkEntityMapper
-import com.example.data.mapper.PagingCharacterMapper
-import com.example.database.model.MarvelCharacter
+import com.example.data.mapper.CharacterEntityMapper
 import com.example.database.model.PagingKeyEntity
+import com.example.network.model.Character
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ internal class CharacterMediator @Inject internal constructor(
     localDataSource: BookmarkLocalDataSourceImpl,
     bookmarkKeyDataSource: PagingKeyDataSourceImpl,
     private val bookmarkMapper: BookMarkEntityMapper,
-    private val characterMapper: PagingCharacterMapper
+    private val characterMapper: CharacterEntityMapper
 ) : RemoteMediator<Int, com.example.database.model.BookmarkEntity>(),
     CharacterRemoteDataSource by remoteDataSource,
     BookmarkLocalDataSource by localDataSource,
@@ -67,10 +67,10 @@ internal class CharacterMediator @Inject internal constructor(
             val results = response.data?.results
             requireNotNull(results)
             totalCount = response.data?.total ?: Int.MAX_VALUE
-            val nextKey = key.plus(CharacterPagingSource.PAGE_LIMIT)
+            val nextKey = key.plus(PAGE_LIMIT)
             Timber.d("Mediator nextKey : $nextKey")
-            val characters = results.filter { it.id == null }.map(characterMapper)
-            val responseIds = characters.map { it.id }
+            val characters = results.filter { it.id != null}
+            val responseIds = characters.mapNotNull { it.id }
             val savedIds = getIds(responseIds)
             update(nextKey, characters.partition { savedIds.contains(it.id) })
             val reached = nextKey >= totalCount
@@ -84,10 +84,10 @@ internal class CharacterMediator @Inject internal constructor(
         }
     }
 
-    private suspend fun update(key: Int, data: Pair<List<MarvelCharacter>, List<MarvelCharacter>>) {
+    private suspend fun update(key: Int, data: Pair<List<Character>, List<Character>>) {
         Timber.d("Mediator data : $data")
         insertKey(PagingKeyEntity(KEY_TYPE, key))
-        update(data.first)
+        update(data.first.map(characterMapper))
         insert(*data.second.map(bookmarkMapper).toTypedArray())
     }
 }

@@ -25,6 +25,7 @@ sealed interface Intention {
     sealed interface Event : Intention {
         data class AddBookmark(val id: Int) : Event
         data class RemoveBookmark(val id: Int) : Event
+        data class SnackBarMessage(val message: String) : Event
     }
 }
 
@@ -33,7 +34,7 @@ sealed interface Action {
     data class LoadPagingData(
         val data: Flow<PagingData<MarvelCharacter>>
     ) : Action {
-        override suspend fun reduce(state: MainUiState) =
+        override suspend fun reduce(state: MutableMainUiState) =
             state.setPagingData(data)
     }
 
@@ -43,78 +44,33 @@ sealed interface Action {
         data object SuccessToSaveImage : Message
         data object FailedToSaveImage : Message
         data object FailedToLoadData : Message
+        data class ShowMessage(val message: String) : Message
 
-        override suspend fun reduce(state: MainUiState) =
+        override suspend fun reduce(state: MutableMainUiState) =
             state.setMessage(this)
     }
 
-    suspend fun reduce(state: MainUiState)
+    sealed interface Navigation : Action {
+        class OpenBookmark : Navigation {
+            override suspend fun reduce(state: MutableMainUiState) {
+                state.setNavigation(this)
+            }
+        }
+    }
+
+    suspend fun reduce(state: MutableMainUiState)
 }
 
 interface MainActionReducer : ActionReducer<UiState, Action>
 
 class MainActionReducerImpl @Inject constructor() : MainActionReducer {
 
-    private val state: MainUiState = MainUiState.idle()
+    private val state: MutableMainUiState = MutableMainUiState.idle()
 
     override suspend fun reduce(action: Action) {
         Timber.d("action -> $action")
         action.reduce(state)
     }
 
-    override fun state(): MainUiState = state
-}
-
-interface UiState {
-    @get:Composable
-    val pagingData: State<Flow<PagingData<MarvelCharacter>>?>
-    @get:Composable
-    val message: State<Action.Message?>
-}
-
-class MainUiState(
-    private val _pagingData: MutableStateFlow<Flow<PagingData<MarvelCharacter>>?>,
-    private val _message: MutableStateFlow<Action.Message?>
-) : UiState {
-    companion object {
-        fun idle() = MainUiState(MutableStateFlow(null), MutableStateFlow(null))
-    }
-
-    override val pagingData: State<Flow<PagingData<MarvelCharacter>>?>
-        @Composable
-        get() = _pagingData.collectAsStateWithLifecycle()
-    override val message: State<Action.Message?>
-        @Composable
-        get() = _message.collectAsStateWithLifecycle()
-
-    suspend fun setPagingData(pagingData: Flow<PagingData<MarvelCharacter>>) {
-        _pagingData.emit(pagingData)
-    }
-
-    suspend fun setMessage(message: Action.Message) {
-        _message.emit(message)
-    }
-}
-
-class PermissionState @OptIn(ExperimentalPermissionsApi::class) constructor(
-    private val dispatcher: MainScopedDispatcher,
-    private val permissionState: PermissionState
-) {
-    @OptIn(ExperimentalPermissionsApi::class)
-    fun onThumbnailClick(url: String?) = run {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ||
-            permissionState.status.isGranted
-        ) {
-            dispatcher.dispatch(Intention.Effect.SaveThumbnail(url))
-        } else {
-            permissionState.launchPermissionRequest()
-        }
-    }
-
-    fun onBookmarkClick(item: MarvelCharacter) = run {
-        dispatcher.dispatch(
-            if (item.mark) Intention.Event.AddBookmark(item.id)
-            else Intention.Event.RemoveBookmark(item.id)
-        )
-    }
+    override fun state(): MutableMainUiState = state
 }

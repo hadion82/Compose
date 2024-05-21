@@ -2,7 +2,6 @@ package com.example.data.mapper
 
 import com.example.data.model.BookmarkData
 import com.example.database.model.BookmarkEntity
-import com.example.database.model.MarvelCharacter
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
@@ -18,6 +17,6 @@ class BookMarkDataMapper @Inject constructor(): Mapper<BookmarkEntity, BookmarkD
             storyCount = data.storyCount,
             eventCount = data.eventCount,
             seriesCount = data.seriesCount,
-            mark = false
+            mark = data.mark
         )
 }

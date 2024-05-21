@@ -1,13 +1,13 @@
 package com.example.data.mapper
 
-import com.example.database.model.MarvelCharacter
+import com.example.database.model.CharacterEntity
 import com.example.network.model.Character
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
-class PagingCharacterMapper @Inject constructor(): Mapper<Character, MarvelCharacter> {
-    override fun invoke(data: Character): MarvelCharacter =
-        MarvelCharacter(
+class CharacterEntityMapper @Inject constructor(): Mapper<Character, CharacterEntity> {
+    override fun invoke(data: Character): CharacterEntity =
+        CharacterEntity(
             id = data.id ?: -1,
             name = data.name,
             description = data.description,

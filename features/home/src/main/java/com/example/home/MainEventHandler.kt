@@ -20,6 +20,9 @@ class MainEventHandler @Inject constructor(
             is Intention.Event.RemoveBookmark ->
                 removeBookmarkUseCase(RemoveBookmarkUseCase.Params(intent.id))
                     .onFailure { dispatch(Action.Message.FailedToDeleteBookmark) }
+
+            is Intention.Event.SnackBarMessage ->
+                dispatch(Action.Message.ShowMessage(intent.message))
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class CharacterItem(
+data class CharacterEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
@@ -32,8 +32,5 @@ data class CharacterItem(
     val eventCount: Int,
 
     @ColumnInfo(name = "series_count")
-    val seriesCount: Int,
-
-    @ColumnInfo(name = "mark", defaultValue = "false")
-    val mark: Boolean
+    val seriesCount: Int
 )

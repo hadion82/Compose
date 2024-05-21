@@ -3,7 +3,7 @@ package com.example.data.datasource.local
 import com.example.database.model.PagingKeyEntity
 
 
-interface PagingKeyDataSource {
+internal interface PagingKeyDataSource {
 
     suspend fun insertKey(
         value: PagingKeyEntity

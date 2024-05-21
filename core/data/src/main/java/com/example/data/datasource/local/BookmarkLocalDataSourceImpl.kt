@@ -3,7 +3,7 @@ package com.example.data.datasource.local
 import androidx.paging.PagingSource
 import com.example.database.model.BookmarkEntity
 import com.example.database.dao.BookmarkDao
-import com.example.database.model.MarvelCharacter
+import com.example.database.model.CharacterEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ internal class BookmarkLocalDataSourceImpl @Inject constructor(
     override suspend fun insert(vararg values: BookmarkEntity) =
         bookmarkDao.insertOrReplace(*values)
 
-    override suspend fun update(values: List<MarvelCharacter>) =
+    override suspend fun update(values: List<CharacterEntity>) =
         bookmarkDao.update(values)
 
     override suspend fun getBookmarksById(ids: List<Int>): List<BookmarkEntity> =

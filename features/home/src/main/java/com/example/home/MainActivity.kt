@@ -7,11 +7,13 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.example.navigator.BookmarksNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), MainActivityScope {
@@ -21,11 +23,17 @@ class MainActivity : ComponentActivity(), MainActivityScope {
 
     private val viewModel by viewModels<MainViewModel>()
 
+    @Inject
+    lateinit var bookmarksNavigator: BookmarksNavigator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MainScreen(uiState = viewModel.state())
+            MainRoute(
+                uiState = ComposeMainUiState(viewModel.state()),
+                presenter = ComposeMainPresenter(viewModel.intents, bookmarksNavigator)
+            )
         }
 
         intents.onEach(viewModel::processIntent)
@@ -33,10 +41,10 @@ class MainActivity : ComponentActivity(), MainActivityScope {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    with(MainActivityScope.default()) {
-        MainScreen(uiState = MainUiState.idle())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    with(MainActivityScope.default()) {
+//        MainScreen(uiState = MainUiState.idle())
+//    }
+//}

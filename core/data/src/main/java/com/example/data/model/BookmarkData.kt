@@ -1,7 +1,5 @@
 package com.example.data.model
 
-import com.example.database.model.BookmarkEntity
-
 data class BookmarkData(
     val id: Int,
     val name: String?,
