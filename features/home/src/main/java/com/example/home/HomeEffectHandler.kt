@@ -5,12 +5,12 @@ import com.example.domain.usecase.thumbnail.SaveThumbnailUseCase
 import com.example.shared.hanlder.AbstractEffectHandler
 import javax.inject.Inject
 
-class MainEffectHandler @Inject constructor(
-    dispatcher: MainActionDispatcher,
+class HomeEffectHandler @Inject constructor(
+    dispatcher: HomeActionDispatcher,
     private val loadCharacterUseCase: LoadCharacterUseCase,
     private val saveThumbnailUseCase: SaveThumbnailUseCase
 ) : AbstractEffectHandler<Intention.Effect>(),
-    MainActionDispatcher by dispatcher {
+    HomeActionDispatcher by dispatcher {
 
     override suspend fun execute(intent: Intention.Effect) {
         when (intent) {

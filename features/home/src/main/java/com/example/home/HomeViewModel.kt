@@ -9,17 +9,17 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     @DefaultDispatcher processDispatcher: CoroutineDispatcher,
-    mainViewModelDelegate: MainViewModelDelegate,
-    processor: MainProcessor,
-    dispatcher: MainActionDispatcher,
-    reducer: MainActionReducer,
+    mainViewModelDelegate: HomeViewModelDelegate,
+    processor: HomeProcessor,
+    dispatcher: HomeActionDispatcher,
+    reducer: HomeActionReducer,
 ) : ViewModel(),
-    MainViewModelDelegate by mainViewModelDelegate,
-    MainProcessor by processor,
-    MainActionDispatcher by dispatcher,
-    MainActionReducer by reducer {
+    HomeViewModelDelegate by mainViewModelDelegate,
+    HomeProcessor by processor,
+    HomeActionDispatcher by dispatcher,
+    HomeActionReducer by reducer {
 
     init {
         intents.onEach(::process)

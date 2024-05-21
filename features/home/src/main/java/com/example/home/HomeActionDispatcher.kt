@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
-interface MainActionDispatcher : ActionDispatcher<Action>
+interface HomeActionDispatcher : ActionDispatcher<Action>
 
-class MainActionDispatcherImpl @Inject constructor() : MainActionDispatcher {
+class HomeActionDispatcherImpl @Inject constructor() : HomeActionDispatcher {
     override val actions: MutableSharedFlow<Action> = MutableSharedFlow()
 
     override fun actions(): Flow<Action> = actions

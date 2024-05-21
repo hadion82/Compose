@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.example.navigator.BookmarksNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,12 +14,12 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(), MainActivityScope {
+class HomeActivity : ComponentActivity(), HomeActivityScope {
 
     override val intents: MutableSharedFlow<Intention> =
         MutableStateFlow(Intention.Effect.LoadCharacters)
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     @Inject
     lateinit var bookmarksNavigator: BookmarksNavigator
@@ -31,8 +29,8 @@ class MainActivity : ComponentActivity(), MainActivityScope {
 
         setContent {
             MainRoute(
-                uiState = ComposeMainUiState(viewModel.state()),
-                presenter = ComposeMainPresenter(viewModel.intents, bookmarksNavigator)
+                uiState = ComposeHomeUiState(viewModel.state()),
+                presenter = ComposeHomePresenter(viewModel.intents, bookmarksNavigator)
             )
         }
 

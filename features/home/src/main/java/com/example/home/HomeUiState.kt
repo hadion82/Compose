@@ -14,17 +14,14 @@ import kotlinx.coroutines.flow.StateFlow
 interface UiState {
     val pagingData: StateFlow<Flow<PagingData<MarvelCharacter>>?>
     val message: StateFlow<Action.Message?>
-    val navigation: StateFlow<Action.Navigation?>
 }
 
-class MutableMainUiState(
+class MutableHomeUiState(
     private val _pagingData: MutableStateFlow<Flow<PagingData<MarvelCharacter>>?>,
-    private val _message: MutableStateFlow<Action.Message?>,
-    private val _navigation: MutableStateFlow<Action.Navigation?>
+    private val _message: MutableStateFlow<Action.Message?>
 ) : UiState {
     companion object {
-        fun idle() = MutableMainUiState(
-            MutableStateFlow(null),
+        fun idle() = MutableHomeUiState(
             MutableStateFlow(null),
             MutableStateFlow(null)
         )
@@ -34,8 +31,6 @@ class MutableMainUiState(
         get() = _pagingData
     override val message: StateFlow<Action.Message?>
         get() = _message
-    override val navigation: StateFlow<Action.Navigation?>
-        get() = _navigation
 
     suspend fun setPagingData(pagingData: Flow<PagingData<MarvelCharacter>>) {
         _pagingData.emit(pagingData)
@@ -44,34 +39,27 @@ class MutableMainUiState(
     suspend fun setMessage(message: Action.Message) {
         _message.emit(message)
     }
-
-    suspend fun setNavigation(action: Action.Navigation) {
-        _navigation.emit(action)
-    }
 }
 
 //XML UI State
-open class MainUiState(
+open class HomeUiState(
     val pagingData: State<Flow<PagingData<MarvelCharacter>>?>,
-    val message: State<Action.Message?>,
-    val navigation: State<Action.Navigation?>
+    val message: State<Action.Message?>
 )
 
 //Compose UI State
-class MainComposableUiState(
+class HomeComposableUiState(
     pagingData: State<Flow<PagingData<MarvelCharacter>>?>,
     message: State<Action.Message?>,
-    navigation: State<Action.Navigation?>,
     val snackBarHostState: SnackbarHostState
-) : MainUiState(pagingData, message, navigation)
+) : HomeUiState(pagingData, message)
 
 @Composable
-fun ComposeMainUiState(uiState: UiState): MainComposableUiState {
+fun ComposeHomeUiState(uiState: UiState): HomeComposableUiState {
     val pagingDataState = uiState.pagingData.collectAsStateWithLifecycle()
     val messageState = uiState.message.collectAsStateWithLifecycle()
-    val navigationState = uiState.navigation.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     return remember {
-        MainComposableUiState(pagingDataState, messageState, navigationState, snackBarHostState)
+        HomeComposableUiState(pagingDataState, messageState, snackBarHostState)
     }
 }

@@ -54,15 +54,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class MainScopedDispatcher(
+class HomeScopedDispatcher(
     intent: MutableSharedFlow<Intention>,
     scope: CoroutineScope
 ) :
     ScopedDispatcher<Intention>(intent, scope)
 
-interface MainActivityScope : UiScope<Intention, MainScopedDispatcher> {
+interface HomeActivityScope : UiScope<Intention, HomeScopedDispatcher> {
     companion object {
-        fun default() = object : MainActivityScope {
+        fun default() = object : HomeActivityScope {
             override val intents: MutableSharedFlow<Intention> =
                 MutableStateFlow(Intention.Effect.LoadCharacters)
         }
@@ -71,7 +71,7 @@ interface MainActivityScope : UiScope<Intention, MainScopedDispatcher> {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContents(
+fun HomeContents(
     mainState: State<Flow<PagingData<MarvelCharacter>>?>,
     presenter: MainPresenter
 ) {
@@ -199,34 +199,6 @@ fun SnackBarMessage(
 }
 
 @Composable
-fun ShowToast(message: String?) = message?.let {
-    Toast.makeText(
-        LocalContext.current,
-        it,
-        Toast.LENGTH_SHORT
-    ).show()
-}
-
-//@Composable
-//fun ToastMessage(
-//    action: State<Action.Message?>
-//) {
-//    val context = LocalContext.current
-//    action.value?.let { message ->
-//        Toast.makeText(
-//            context,
-//            when (message) {
-//                is Action.Message.FailedToLoadData -> R.string.failed_to_load_data
-//                is Action.Message.FailedToBookmark -> R.string.failed_to_bookmark
-//                is Action.Message.FailedToDeleteBookmark -> R.string.failed_to_delete_bookmark
-//                is Action.Message.SuccessToSaveImage -> R.string.image_saved_successfully
-//                is Action.Message.FailedToSaveImage -> R.string.failed_to_save_image
-//            }, Toast.LENGTH_SHORT
-//        ).show()
-//    }
-//}
-
-@Composable
 fun TitleBar(onTitleClick: (Activity) -> Unit) {
     Box(Modifier.fillMaxWidth()) {
         val activity = LocalContext.current as? Activity ?: return
@@ -249,7 +221,7 @@ fun TitleBar(onTitleClick: (Activity) -> Unit) {
 
 @Composable
 fun MainScreen(
-    uiState: MainComposableUiState, presenter: MainPresenter
+    uiState: HomeComposableUiState, presenter: MainPresenter
 ) {
     ComposeTheme {
         DefaultSurface {
@@ -267,7 +239,7 @@ fun MainScreen(
                         )
                 ) {
                     TitleBar(presenter::onTitleClick)
-                    MainContents(uiState.pagingData, presenter)
+                    HomeContents(uiState.pagingData, presenter)
                     SnackBarMessage(uiState.message, uiState.snackBarHostState)
                 }
             }

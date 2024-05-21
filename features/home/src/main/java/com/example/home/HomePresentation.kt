@@ -1,17 +1,9 @@
 package com.example.home
 
-import android.os.Build
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import com.example.model.MarvelCharacter
 import com.example.shared.reducer.ActionReducer
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,7 +26,7 @@ sealed interface Action {
     data class LoadPagingData(
         val data: Flow<PagingData<MarvelCharacter>>
     ) : Action {
-        override suspend fun reduce(state: MutableMainUiState) =
+        override suspend fun reduce(state: MutableHomeUiState) =
             state.setPagingData(data)
     }
 
@@ -46,31 +38,23 @@ sealed interface Action {
         data object FailedToLoadData : Message
         data class ShowMessage(val message: String) : Message
 
-        override suspend fun reduce(state: MutableMainUiState) =
+        override suspend fun reduce(state: MutableHomeUiState) =
             state.setMessage(this)
     }
 
-    sealed interface Navigation : Action {
-        class OpenBookmark : Navigation {
-            override suspend fun reduce(state: MutableMainUiState) {
-                state.setNavigation(this)
-            }
-        }
-    }
-
-    suspend fun reduce(state: MutableMainUiState)
+    suspend fun reduce(state: MutableHomeUiState)
 }
 
-interface MainActionReducer : ActionReducer<UiState, Action>
+interface HomeActionReducer : ActionReducer<UiState, Action>
 
-class MainActionReducerImpl @Inject constructor() : MainActionReducer {
+class HomeActionReducerImpl @Inject constructor() : HomeActionReducer {
 
-    private val state: MutableMainUiState = MutableMainUiState.idle()
+    private val state: MutableHomeUiState = MutableHomeUiState.idle()
 
     override suspend fun reduce(action: Action) {
         Timber.d("action -> $action")
         action.reduce(state)
     }
 
-    override fun state(): MutableMainUiState = state
+    override fun state(): MutableHomeUiState = state
 }

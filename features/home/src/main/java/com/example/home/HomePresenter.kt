@@ -23,7 +23,7 @@ interface MainPresenter {
 }
 
 class MainPresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
-    private val dispatcher: MainScopedDispatcher,
+    private val dispatcher: HomeScopedDispatcher,
     private val permissionState: PermissionState,
     private val bookmarksNavigator: BookmarksNavigator
 ) : MainPresenter, IntentDispatcher<Intention> by dispatcher {
@@ -58,12 +58,12 @@ class MainPresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ComposeMainPresenter (
+fun ComposeHomePresenter (
     intents: MutableSharedFlow<Intention>,
     bookmarksNavigator: BookmarksNavigator
 ): MainPresenter {
     val composeScope = rememberCoroutineScope()
-    val dispatcher = MainScopedDispatcher(intents, composeScope)
+    val dispatcher = HomeScopedDispatcher(intents, composeScope)
     val permissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     return remember {

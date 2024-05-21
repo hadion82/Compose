@@ -5,12 +5,12 @@ import com.example.domain.usecase.bookmark.RemoveBookmarkUseCase
 import com.example.shared.hanlder.AbstractActionHandler
 import javax.inject.Inject
 
-class MainEventHandler @Inject constructor(
-    dispatcher: MainActionDispatcher,
+class HomeEventHandler @Inject constructor(
+    dispatcher: HomeActionDispatcher,
     private val addBookmarkUseCase: AddBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase
 ) : AbstractActionHandler<Intention.Event>(),
-    MainActionDispatcher by dispatcher {
+    HomeActionDispatcher by dispatcher {
 
     override suspend fun execute(intent: Intention.Event) {
         when (intent) {

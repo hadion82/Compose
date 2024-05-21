@@ -3,6 +3,6 @@ package com.example.home
 import androidx.compose.runtime.Composable
 
 @Composable
-fun MainRoute(uiState: MainComposableUiState, presenter: MainPresenter) {
+fun MainRoute(uiState: HomeComposableUiState, presenter: MainPresenter) {
     MainScreen(uiState, presenter)
 }
