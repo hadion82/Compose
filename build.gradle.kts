@@ -5,6 +5,11 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
+    alias(libs.plugins.dependencyGuard) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.firebase.perf) apply false
+    alias(libs.plugins.room) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block
 

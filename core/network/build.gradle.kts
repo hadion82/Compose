@@ -1,10 +1,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.convention.android.library)
+    alias(libs.plugins.convention.android.hilt)
 }
 
 val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
@@ -14,11 +12,8 @@ fun getApiKey(propertyKey: String): String =
 
 android {
     namespace = "com.example.network"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 28
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -39,20 +34,9 @@ android {
             buildConfigField("String", "MARVEL_API_PRIVATE_KEY", getApiKey("MARVEL_API_PRIVATE_KEY"))
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
-
-    implementation(libs.core.ktx)
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.android.compiler)
 
     implementation(libs.squareup.okhttp3)
     implementation(libs.squareup.okhttp3.logging)

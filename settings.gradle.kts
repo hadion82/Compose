@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -28,3 +29,5 @@ include(":features:bookmarks")
 include(":core:database")
 include(":core:network")
 include(":navigator")
+//include(":build-logic")
+//include(":build-logic:convention")

@@ -1,15 +1,13 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.convention.android.library)
+    alias(libs.plugins.convention.android.hilt)
+    alias(libs.plugins.convention.android.library.compose)
 }
 
 android {
     namespace = "com.example.ui"
-    compileSdk = 34
 
     defaultConfig {
-        minSdk = 28
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -26,34 +24,11 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 }
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material3)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.runtime.android)
+    implementation(libs.androidx.material3)
 
     implementation(libs.bumptech.glide.compose)
     implementation(libs.accompanist.permissions)
