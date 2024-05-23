@@ -27,9 +27,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.material3)
-
     implementation(libs.bumptech.glide.compose)
     implementation(libs.accompanist.permissions)
 
