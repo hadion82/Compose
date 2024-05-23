@@ -1,11 +1,10 @@
-import com.example.convention.NiaBuildType
+import com.example.convention.ApplicationBuildType
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.convention.android.application)
     alias(libs.plugins.convention.android.hilt)
     alias(libs.plugins.convention.android.application.compose)
-//    alias(libs.plugins.convention.android.application.flavors)
     alias(libs.plugins.convention.android.application.jacoco)
 }
 
@@ -26,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = NiaBuildType.DEBUG.applicationIdSuffix
+            applicationIdSuffix = ApplicationBuildType.DEBUG.applicationIdSuffix
         }
         release {
             isMinifyEnabled = false
