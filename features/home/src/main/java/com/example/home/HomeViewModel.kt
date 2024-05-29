@@ -6,10 +6,12 @@ import com.example.shared.di.DefaultDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     @DefaultDispatcher processDispatcher: CoroutineDispatcher,
     mainViewModelDelegate: HomeViewModelDelegate,
     processor: HomeProcessor,
@@ -28,5 +30,11 @@ class HomeViewModel @Inject constructor(
 
         actions().onEach(::reduce)
             .launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            intents.emit(
+                Intention.Effect.LoadCharacters
+            )
+        }
     }
 }

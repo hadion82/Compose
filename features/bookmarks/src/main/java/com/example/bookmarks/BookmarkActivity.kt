@@ -4,23 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.graph.BookmarkGraph
+import com.example.graph.ProfileGraph
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BookmarkActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<BookmarkViewModel>()
+    @Inject
+    internal lateinit var bookmarkGraph: BookmarkGraph
+
+    @Inject
+    internal lateinit var profileGraph: ProfileGraph
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BookmarkRoute(
-                uiState = ComposeBookmarkUiState(viewModel),
-                presenter = viewModel
-            )
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = BookmarkGraph.BOOK_MARK_ROUTE
+            ) {
+                bookmarkGraph.build(this, navController)
+                profileGraph.build(this)
+            }
         }
     }
 }

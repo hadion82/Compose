@@ -4,9 +4,9 @@ import com.example.ui.viewmodel.ViewModelDelegate
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
-interface HomeViewModelDelegate : ViewModelDelegate<Intention, Action>
+internal interface HomeViewModelDelegate : ViewModelDelegate<Intention, Action>
 
-class HomeViewModelDelegateImpl @Inject constructor() :
+internal class HomeViewModelDelegateImpl @Inject constructor() :
     HomeViewModelDelegate {
     override val intents: MutableSharedFlow<Intention> = MutableSharedFlow()
 

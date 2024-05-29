@@ -11,7 +11,7 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class HomeViewModelBindModule {
+internal abstract class HomeViewModelBindModule {
 
     @Binds
     abstract fun bindHomeProcessor(

@@ -1,7 +1,6 @@
 package com.example.home
 
 import android.app.Activity
-import android.widget.Toast
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -26,9 +24,10 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,30 +36,36 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.example.compose.ui.scope.UiScope
+import com.example.ui.scope.UiScope
 import com.example.model.MarvelCharacter
+import com.example.navigator.BookmarksNavigator
 import com.example.shared.dispatcher.ScopedDispatcher
 import com.example.ui.common.CharacterContent
+import com.example.ui.common.showSnackBarMessage
 import com.example.ui.theme.ComposeTheme
 import com.example.ui.theme.DefaultSurface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
-class HomeScopedDispatcher(
+internal class HomeScopedDispatcher(
     intent: MutableSharedFlow<Intention>,
     scope: CoroutineScope
 ) :
     ScopedDispatcher<Intention>(intent, scope)
 
-interface HomeActivityScope : UiScope<Intention, HomeScopedDispatcher> {
+internal interface HomeActivityScope : UiScope<Intention, HomeScopedDispatcher> {
     companion object {
         fun default() = object : HomeActivityScope {
             override val intents: MutableSharedFlow<Intention> =
@@ -69,9 +74,22 @@ interface HomeActivityScope : UiScope<Intention, HomeScopedDispatcher> {
     }
 }
 
+@Composable
+internal fun HomeRoute(
+    navigator: BookmarksNavigator,
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    Timber.d("HomeRoute")
+    HomeScreen(
+        ComposeHomeUiState(viewModel.state()),
+        ComposeHomePresenter(viewModel.intents, navigator, navController)
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContents(
+internal fun HomeContent(
     mainState: State<Flow<PagingData<MarvelCharacter>>?>,
     presenter: MainPresenter
 ) {
@@ -88,7 +106,8 @@ fun HomeContents(
             pullToRefreshState = pullToRefreshState,
             pagingItems = pagingItems,
             onThumbnailClick = presenter::onThumbnailClick,
-            onBookmarkClick = presenter::onBookmarkClick
+            onBookmarkClick = presenter::onBookmarkClick,
+            onDescriptionClick = presenter::onDescriptionClick
         )
         AppendIndicator(
             loadState = pagingItems.loadState.append,
@@ -110,11 +129,12 @@ fun HomeContents(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterLazyColum(
+internal fun CharacterLazyColum(
     pullToRefreshState: PullToRefreshState,
     pagingItems: LazyPagingItems<MarvelCharacter>,
     onThumbnailClick: (String?) -> Unit,
-    onBookmarkClick: (MarvelCharacter) -> Unit
+    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onDescriptionClick: (id: Int) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp, 8.dp),
@@ -129,7 +149,8 @@ fun CharacterLazyColum(
                     CharacterContent(
                         characterItem,
                         onThumbnailClick = onThumbnailClick,
-                        onBookmarkClick = onBookmarkClick
+                        onBookmarkClick = onBookmarkClick,
+                        onDescriptionClick = onDescriptionClick
                     )
                     HorizontalDivider()
                 }
@@ -139,7 +160,7 @@ fun CharacterLazyColum(
 }
 
 @Composable
-fun AppendIndicator(
+internal fun AppendIndicator(
     loadState: LoadState,
     showMessage: (String) -> Unit
 ) {
@@ -156,7 +177,7 @@ fun AppendIndicator(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RefreshIndicator(
+internal fun RefreshIndicator(
     loadState: LoadState,
     pullToRefreshState: PullToRefreshState,
     modifier: Modifier,
@@ -178,28 +199,24 @@ fun RefreshIndicator(
 }
 
 @Composable
-fun SnackBarMessage(
+internal fun SnackBarMessage(
     messageState: State<Action.Message?>,
     snackBarHostState: SnackbarHostState
 ) {
-    val stateValue = messageState.value ?: return
-    val scope = rememberCoroutineScope()
-    val message = when (stateValue) {
-        is Action.Message.FailedToLoadData -> stringResource(R.string.failed_to_load_data)
-        is Action.Message.FailedToBookmark -> stringResource(R.string.failed_to_bookmark)
-        is Action.Message.FailedToDeleteBookmark -> stringResource(R.string.failed_to_delete_bookmark)
-        is Action.Message.SuccessToSaveImage -> stringResource(R.string.image_saved_successfully)
-        is Action.Message.FailedToSaveImage -> stringResource(R.string.failed_to_save_image)
-        is Action.Message.ShowMessage -> stateValue.message
-    }
-    scope.launch {
-        snackBarHostState
-            .showSnackbar(message = message, duration = SnackbarDuration.Short)
+    snackBarHostState.showSnackBarMessage(messageState) { stateValue ->
+        when (stateValue) {
+            is Action.Message.FailedToLoadData -> stringResource(R.string.failed_to_load_data)
+            is Action.Message.FailedToBookmark -> stringResource(R.string.failed_to_bookmark)
+            is Action.Message.FailedToDeleteBookmark -> stringResource(R.string.failed_to_delete_bookmark)
+            is Action.Message.SuccessToSaveImage -> stringResource(R.string.image_saved_successfully)
+            is Action.Message.FailedToSaveImage -> stringResource(R.string.failed_to_save_image)
+            is Action.Message.ShowMessage -> stateValue.message
+        }
     }
 }
 
 @Composable
-fun TitleBar(onTitleClick: (Activity) -> Unit) {
+internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
     Box(Modifier.fillMaxWidth()) {
         val activity = LocalContext.current as? Activity ?: return
         Text(
@@ -212,7 +229,7 @@ fun TitleBar(onTitleClick: (Activity) -> Unit) {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(4.dp, 2.dp),
-            onClick = {onTitleClick(activity)}
+            onClick = { onTitleClick(activity) }
         ) {
             Text(text = stringResource(id = R.string.label_bookmark))
         }
@@ -220,7 +237,7 @@ fun TitleBar(onTitleClick: (Activity) -> Unit) {
 }
 
 @Composable
-fun MainScreen(
+internal fun HomeScreen(
     uiState: HomeComposableUiState, presenter: MainPresenter
 ) {
     ComposeTheme {
@@ -231,15 +248,10 @@ fun MainScreen(
                 Column(
                     Modifier.fillMaxSize()
                         .windowInsetsPadding(WindowInsets.safeDrawing)
-                        .padding(
-                            0.dp,
-                            paddingValues.calculateTopPadding(),
-                            0.dp,
-                            paddingValues.calculateBottomPadding()
-                        )
+                        .padding(paddingValues)
                 ) {
                     TitleBar(presenter::onTitleClick)
-                    HomeContents(uiState.pagingData, presenter)
+                    HomeContent(uiState.pagingData, presenter)
                     SnackBarMessage(uiState.message, uiState.snackBarHostState)
                 }
             }

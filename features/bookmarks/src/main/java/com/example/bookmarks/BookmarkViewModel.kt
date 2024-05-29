@@ -1,9 +1,6 @@
 package com.example.bookmarks
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.domain.usecase.bookmark.LoadBookmarkUseCase
@@ -11,16 +8,23 @@ import com.example.domain.usecase.bookmark.RemoveBookmarkUseCase
 import com.example.domain.usecase.thumbnail.SaveThumbnailUseCase
 import com.example.model.MarvelCharacter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BookmarkViewModel @Inject constructor(
+internal class BookmarkViewModel @Inject constructor(
     loadBookmarkUseCase: LoadBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
     private val saveThumbnailUseCase: SaveThumbnailUseCase,
-) : ViewModel(), UiState, BookmarkPresenter {
+) : ViewModel(), UiState, IntentPresenter {
 
     private val _pagingData: MutableStateFlow<Flow<PagingData<MarvelCharacter>>?> =
         MutableStateFlow(null)

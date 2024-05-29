@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
-sealed interface Intention {
+internal sealed interface Intention {
     sealed interface Effect : Intention {
         data object LoadCharacters : Effect
 
@@ -21,7 +21,7 @@ sealed interface Intention {
     }
 }
 
-sealed interface Action {
+internal sealed interface Action {
 
     data class LoadPagingData(
         val data: Flow<PagingData<MarvelCharacter>>
@@ -45,9 +45,9 @@ sealed interface Action {
     suspend fun reduce(state: MutableHomeUiState)
 }
 
-interface HomeActionReducer : ActionReducer<UiState, Action>
+internal interface HomeActionReducer : ActionReducer<UiState, Action>
 
-class HomeActionReducerImpl @Inject constructor() : HomeActionReducer {
+internal class HomeActionReducerImpl @Inject constructor() : HomeActionReducer {
 
     private val state: MutableHomeUiState = MutableHomeUiState.idle()
 

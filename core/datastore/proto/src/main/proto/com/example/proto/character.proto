@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "com.example.datastore.proto";
+option java_multiple_files = true;
+
+message CharacterProto {
+  int32 id = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional string thumbnail = 4;
+  int32 url_count = 5;
+  int32 story_count = 6;
+  int32 event_count = 7;
+  int32 series_count = 8;
+  bool mark = 9;
+}

@@ -1,4 +1,4 @@
-package com.example.compose.ui.scope
+package com.example.ui.scope
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope

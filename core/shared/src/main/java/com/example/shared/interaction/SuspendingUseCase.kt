@@ -7,7 +7,7 @@ abstract class SuspendingUseCase<in P, out T>(
     private val coroutineDispatcher: CoroutineDispatcher
 ) where T : Any {
 
-    abstract suspend fun execute(params: P): T
+    abstract suspend fun execute(params: P): T?
 
     suspend operator fun invoke(
         params: P

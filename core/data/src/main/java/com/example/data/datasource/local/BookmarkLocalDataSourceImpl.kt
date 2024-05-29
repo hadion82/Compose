@@ -20,6 +20,9 @@ internal class BookmarkLocalDataSourceImpl @Inject constructor(
     override suspend fun getBookmarksById(ids: List<Int>): List<BookmarkEntity> =
         bookmarkDao.getBookMarksById(ids)
 
+    override suspend fun getBookmarksById(id: Int): BookmarkEntity? =
+        bookmarkDao.getBookMarksById(id)
+
     override suspend fun getIds(ids: List<Int>): List<Int> =
         bookmarkDao.getIds(ids)
 

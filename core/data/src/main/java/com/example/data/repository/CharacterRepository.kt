@@ -9,4 +9,6 @@ interface CharacterRepository {
 
     @Throws(Exception::class)
     fun loadPagingData(): Flow<PagingData<BookmarkData>>
+
+    suspend fun getCharacterById(id: Int): BookmarkData?
 }

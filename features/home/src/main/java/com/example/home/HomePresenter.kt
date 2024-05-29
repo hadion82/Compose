@@ -6,6 +6,9 @@ import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavController
+import com.example.graph.BookmarkGraph
+import com.example.graph.ProfileGraph
 import com.example.model.MarvelCharacter
 import com.example.navigator.BookmarksNavigator
 import com.example.shared.dispatcher.IntentDispatcher
@@ -15,17 +18,19 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-interface MainPresenter {
+internal interface MainPresenter {
     fun onTitleClick(activity: Activity)
     fun onBookmarkClick(item: MarvelCharacter)
-    fun showMessage(message: String)
     fun onThumbnailClick(url: String?)
+    fun onDescriptionClick(id: Int)
+    fun showMessage(message: String)
 }
 
-class MainPresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
+internal class HomePresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
     private val dispatcher: HomeScopedDispatcher,
     private val permissionState: PermissionState,
-    private val bookmarksNavigator: BookmarksNavigator
+    private val bookmarksNavigator: BookmarksNavigator,
+    private val navController: NavController
 ) : MainPresenter, IntentDispatcher<Intention> by dispatcher {
 
     override fun onTitleClick(activity: Activity) {
@@ -39,11 +44,6 @@ class MainPresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
         )
     }
 
-    override fun showMessage(message: String) {
-        dispatch(
-            Intention.Event.SnackBarMessage(message)
-        )
-    }
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onThumbnailClick(url: String?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ||
@@ -54,19 +54,31 @@ class MainPresenterImpl @OptIn(ExperimentalPermissionsApi::class) constructor(
             permissionState.launchPermissionRequest()
         }
     }
+
+    override fun onDescriptionClick(id: Int) {
+        val route = ProfileGraph.Route.makeRoute(id)
+        navController.navigate(route, navOptions = null)
+    }
+
+    override fun showMessage(message: String) {
+        dispatch(
+            Intention.Event.SnackBarMessage(message)
+        )
+    }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ComposeHomePresenter (
+internal fun ComposeHomePresenter (
     intents: MutableSharedFlow<Intention>,
-    bookmarksNavigator: BookmarksNavigator
+    bookmarksNavigator: BookmarksNavigator,
+    navController: NavController
 ): MainPresenter {
     val composeScope = rememberCoroutineScope()
     val dispatcher = HomeScopedDispatcher(intents, composeScope)
     val permissionState = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     return remember {
-        MainPresenterImpl(dispatcher, permissionState, bookmarksNavigator)
+        HomePresenterImpl(dispatcher, permissionState, bookmarksNavigator, navController)
     }
 }

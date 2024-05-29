@@ -3,6 +3,8 @@
     <string name="label_bookmark">bookmark</string>
     <string name="label_unknown">Unknown</string>
 
+    <string name="variant_name">name : %1$s</string>
+    <string name="variant_description">description :\n%1$s</string>
     <string name="url_count">urls : %1$s</string>
     <string name="comic_count">comics : %1$s</string>
     <string name="story_count">stories : %1$s</string>
@@ -10,4 +12,5 @@
     <string name="series_count">series : %1$s</string>
 
     <string name="request_external_storage_permission">External storage permission required for this feature to be available.</string>
+    <string name="failed_to_load_data">Failed to load data</string>
 </resources>

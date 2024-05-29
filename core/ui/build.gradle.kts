@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation(libs.bumptech.glide.compose)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

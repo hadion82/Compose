@@ -1,6 +1,5 @@
 package com.example.bookmarks
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,31 +10,40 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.example.graph.ProfileGraph
 import com.example.model.MarvelCharacter
 import com.example.ui.common.CharacterContent
+import com.example.ui.common.showSnackBarMessage
 import com.example.ui.theme.ComposeTheme
 import com.example.ui.theme.DefaultSurface
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
-fun TitleBar() {
+internal fun BookmarkRoute(navHostController: NavController, viewModel: BookmarkViewModel = hiltViewModel()) {
+    BookmarkScreen(
+        ComposeBookmarkUiState(viewModel),
+        ComposeBookmarkPresenter(viewModel, navHostController)
+    )
+}
+
+@Composable
+internal fun TitleBar() {
     Box(Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.label_bookmarks),
@@ -47,10 +55,11 @@ fun TitleBar() {
 }
 
 @Composable
-fun BookmarkContents(
+internal fun BookmarkContents(
     pagingDataState: State<Flow<PagingData<MarvelCharacter>>?>,
     onThumbnailClick: (url: String?) -> Unit,
-    onBookmarkClick: (item: MarvelCharacter) -> Unit
+    onBookmarkClick: (item: MarvelCharacter) -> Unit,
+    onDescriptionClick: (id: Int) -> Unit
 ) {
     val pagingDataStateValue by pagingDataState
     val pagingItems = pagingDataStateValue?.collectAsLazyPagingItems() ?: return
@@ -66,7 +75,8 @@ fun BookmarkContents(
                 CharacterContent(
                     characterItem,
                     onThumbnailClick = onThumbnailClick,
-                    onBookmarkClick = onBookmarkClick
+                    onBookmarkClick = onBookmarkClick,
+                    onDescriptionClick = onDescriptionClick
                 )
                 HorizontalDivider()
             }
@@ -75,48 +85,28 @@ fun BookmarkContents(
 }
 
 @Composable
-fun SnackBarMessage(
+internal fun SnackBarMessage(
     messageState: State<Action.Message?>,
     snackBarHostState: SnackbarHostState
 ) {
-    val stateValue = messageState.value ?: return
-    val scope = rememberCoroutineScope()
-    val message = stringResource(
-        when (stateValue) {
-            is Action.Message.FailedToLoadData -> R.string.failed_to_load_data
-            is Action.Message.FailedToRemoveBookmark -> R.string.failed_to_delete_bookmark
-            is Action.Message.SuccessToSaveImage -> R.string.image_saved_successfully
-            is Action.Message.FailedToSaveImage -> R.string.failed_to_save_image
-        }
-    )
-    scope.launch {
-        snackBarHostState
-            .showSnackbar(message = message, duration = SnackbarDuration.Short)
-    }
-}
-
-@Composable
-fun ToastMessage(
-    state: State<Action.Message?>
-) = with(LocalContext.current) {
-    state.value?.let { message ->
-        Toast.makeText(
-            this,
-            when (message) {
-                is Action.Message.FailedToLoadData -> R.string.failed_to_load_data
+    snackBarHostState.showSnackBarMessage(messageState) { stateValue ->
+        stringResource(
+            when (stateValue) {
+                is Action.Message.FailedToLoadData -> com.example.ui.R.string.failed_to_load_data
                 is Action.Message.FailedToRemoveBookmark -> R.string.failed_to_delete_bookmark
                 is Action.Message.SuccessToSaveImage -> R.string.image_saved_successfully
                 is Action.Message.FailedToSaveImage -> R.string.failed_to_save_image
-            }, Toast.LENGTH_SHORT
-        ).show()
+            }
+        )
     }
 }
 
 @Composable
-fun BookmarkScreen(
+internal fun BookmarkScreen(
     uiState: BookmarkComposableUiState,
     presenter: BookmarkPresenter
 ) {
+    Timber.d("BookmarkScreen")
     ComposeTheme {
         DefaultSurface {
             Scaffold(snackbarHost = {
@@ -135,11 +125,23 @@ fun BookmarkScreen(
                     BookmarkContents(
                         uiState.pagingData,
                         presenter::onThumbnailClick,
-                        presenter::onBookmarkClick
+                        presenter::onBookmarkClick,
+                        presenter::onDescriptionClick
                     )
                     SnackBarMessage(uiState.message, uiState.snackBarHostState)
                 }
             }
+        }
+    }
+}
+
+@Composable
+internal fun Navigation(navigation: State<Action.Navigation?>, navController: NavController) {
+    val navValue = navigation.value ?: return
+    when(navValue) {
+        is Action.Navigation.MoveToDetail -> {
+            val route = ProfileGraph.Route.makeRoute(navValue.id)
+            navController.navigate(route, navOptions = null)
         }
     }
 }

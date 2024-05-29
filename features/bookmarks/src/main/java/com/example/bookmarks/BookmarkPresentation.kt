@@ -1,7 +1,10 @@
 package com.example.bookmarks
 
-sealed interface Action {
+internal sealed interface Action {
 
+    sealed interface Navigation: Action {
+        data class MoveToDetail(val id: Int): Navigation
+    }
     sealed interface Message : Action {
         data object FailedToRemoveBookmark : Message
         data object SuccessToSaveImage : Message

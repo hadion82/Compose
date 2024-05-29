@@ -14,6 +14,9 @@ interface BookmarkDao : BaseDao<BookmarkEntity> {
     @Query("SELECT * FROM bookmark WHERE id IN (:ids)")
     suspend fun getBookMarksById(ids: List<Int>): List<BookmarkEntity>
 
+    @Query("SELECT * FROM bookmark WHERE id = :id")
+    suspend fun getBookMarksById(id: Int): BookmarkEntity?
+
     @Update(entity = BookmarkEntity::class)
     suspend fun update(values: List<CharacterEntity>)
 

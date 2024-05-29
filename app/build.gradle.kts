@@ -50,4 +50,5 @@ dependencies {
 
     implementation(project(":features:home"))
     implementation(project(":features:bookmarks"))
+    implementation(project(":features:profile"))
 }

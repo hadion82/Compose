@@ -39,14 +39,19 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun CharacterContent(
     character: MarvelCharacter,
     onThumbnailClick: (String?) -> Unit,
-    onBookmarkClick: (MarvelCharacter) -> Unit
+    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onDescriptionClick: (id: Int) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         CharacterThumbnail(
             character = character,
             onClick = onThumbnailClick
         )
-        CharacterInformation(item = character, onBookmarkClick = onBookmarkClick)
+        CharacterInformation(
+            item = character,
+            onBookmarkClick = onBookmarkClick,
+            onDescriptionClick = onDescriptionClick
+        )
     }
 }
 
@@ -77,11 +82,16 @@ fun CharacterThumbnail(
 }
 
 @Composable
-fun CharacterInformation(item: MarvelCharacter, onBookmarkClick: (MarvelCharacter) -> Unit) =
+fun CharacterInformation(
+    item: MarvelCharacter,
+    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onDescriptionClick: (id: Int) -> Unit
+) =
     with(item) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.align(Alignment.CenterStart)
+                    .clickable(true) { onDescriptionClick(item.id) }
             ) {
                 Text(text = name ?: stringResource(id = R.string.label_unknown))
                 Text(text = stringResource(id = R.string.url_count, urlCount))
@@ -110,7 +120,7 @@ fun CharacterInformation(item: MarvelCharacter, onBookmarkClick: (MarvelCharacte
 fun CheckPermission(onGranted: () -> Unit) {
     val externalStoragePermissionState =
         rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    if(externalStoragePermissionState.status.isGranted) {
+    if (externalStoragePermissionState.status.isGranted) {
         onGranted()
     } else {
         Column {

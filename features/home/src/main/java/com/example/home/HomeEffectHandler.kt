@@ -5,7 +5,7 @@ import com.example.domain.usecase.thumbnail.SaveThumbnailUseCase
 import com.example.shared.hanlder.AbstractEffectHandler
 import javax.inject.Inject
 
-class HomeEffectHandler @Inject constructor(
+internal class HomeEffectHandler @Inject constructor(
     dispatcher: HomeActionDispatcher,
     private val loadCharacterUseCase: LoadCharacterUseCase,
     private val saveThumbnailUseCase: SaveThumbnailUseCase

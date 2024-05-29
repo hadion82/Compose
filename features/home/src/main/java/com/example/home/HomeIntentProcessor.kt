@@ -6,9 +6,9 @@ import com.example.shared.processor.IntentProcessor
 import timber.log.Timber
 import javax.inject.Inject
 
-interface HomeProcessor : IntentProcessor<Intention, Action>
+internal interface HomeProcessor : IntentProcessor<Intention, Action>
 
-class HomeIntentProcessor @Inject constructor(
+internal class HomeIntentProcessor @Inject constructor(
     actionHandler: HomeEventHandler,
     effectHandler: HomeEffectHandler
 ) : HomeProcessor,

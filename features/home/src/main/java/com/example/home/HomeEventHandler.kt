@@ -5,7 +5,7 @@ import com.example.domain.usecase.bookmark.RemoveBookmarkUseCase
 import com.example.shared.hanlder.AbstractActionHandler
 import javax.inject.Inject
 
-class HomeEventHandler @Inject constructor(
+internal class HomeEventHandler @Inject constructor(
     dispatcher: HomeActionDispatcher,
     private val addBookmarkUseCase: AddBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase

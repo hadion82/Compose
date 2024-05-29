@@ -16,5 +16,8 @@ true // Needed to make the Suppress annotation work for the plugins block
 buildscript {
     dependencies {
         classpath(libs.squareup.javapoet)
+//        classpath(libs.google.oss.licenses.plugin) {
+//            exclude(group = "com.google.protobuf")
+//        }
     }
 }

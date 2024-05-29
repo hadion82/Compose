@@ -17,6 +17,7 @@ internal interface BookmarkLocalDataSource {
     )
 
     suspend fun getBookmarksById(ids: List<Int>): List<BookmarkEntity>
+    suspend fun getBookmarksById(id: Int): BookmarkEntity?
 
     suspend fun getIds(ids: List<Int>): List<Int>
 
