@@ -48,7 +48,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    implementation(project(":features:home"))
-    implementation(project(":features:bookmarks"))
-    implementation(project(":features:profile"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:bookmarks"))
+    implementation(project(":feature:profile"))
 }
