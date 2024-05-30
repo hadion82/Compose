@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.convention.android.library)
     alias(libs.plugins.convention.android.hilt)
+    alias(libs.plugins.convention.android.library.jacoco)
 }
 
 val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
