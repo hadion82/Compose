@@ -49,8 +49,8 @@ import com.example.navigator.BookmarksNavigator
 import com.example.shared.dispatcher.ScopedDispatcher
 import com.example.ui.common.CharacterContent
 import com.example.ui.common.showSnackBarMessage
-import com.example.ui.theme.ComposeTheme
-import com.example.ui.theme.DefaultSurface
+import com.example.design.theme.ComposeTheme
+import com.example.design.theme.DefaultSurface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -240,8 +240,8 @@ internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
 internal fun HomeScreen(
     uiState: HomeComposableUiState, presenter: MainPresenter
 ) {
-    ComposeTheme {
-        DefaultSurface {
+    com.example.design.theme.ComposeTheme {
+        com.example.design.theme.DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

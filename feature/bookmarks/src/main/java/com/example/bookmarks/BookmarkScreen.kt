@@ -29,8 +29,8 @@ import com.example.graph.ProfileGraph
 import com.example.model.MarvelCharacter
 import com.example.ui.common.CharacterContent
 import com.example.ui.common.showSnackBarMessage
-import com.example.ui.theme.ComposeTheme
-import com.example.ui.theme.DefaultSurface
+import com.example.design.theme.ComposeTheme
+import com.example.design.theme.DefaultSurface
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
@@ -107,8 +107,8 @@ internal fun BookmarkScreen(
     presenter: BookmarkPresenter
 ) {
     Timber.d("BookmarkScreen")
-    ComposeTheme {
-        DefaultSurface {
+    com.example.design.theme.ComposeTheme {
+        com.example.design.theme.DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

@@ -1,4 +1,4 @@
-package com.example.ui.theme
+package com.example.design.animation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition

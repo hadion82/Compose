@@ -34,8 +34,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.model.MarvelCharacter
 import com.example.shared.extensions.pixel
 import com.example.ui.common.showSnackBarMessage
-import com.example.ui.theme.ComposeTheme
-import com.example.ui.theme.DefaultSurface
+import com.example.design.theme.ComposeTheme
+import com.example.design.theme.DefaultSurface
 
 @Composable
 internal fun ProfileRoute(id: Int, viewModel: ProfileViewModel = hiltViewModel()) {
@@ -131,8 +131,8 @@ internal fun SnackBarMessage(
 internal fun ProfileScreen(
     uiState: ProfileComposableUiState
 ) {
-    ComposeTheme {
-        DefaultSurface {
+    com.example.design.theme.ComposeTheme {
+        com.example.design.theme.DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

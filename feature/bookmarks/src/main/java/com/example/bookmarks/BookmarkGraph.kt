@@ -4,10 +4,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.graph.BookmarkGraph
-import com.example.ui.theme.enterTransition
-import com.example.ui.theme.exitTransition
-import com.example.ui.theme.popEnterTransition
-import com.example.ui.theme.popExitTransition
+import com.example.design.animation.enterTransition
+import com.example.design.animation.exitTransition
+import com.example.design.animation.popEnterTransition
+import com.example.design.animation.popExitTransition
 import javax.inject.Inject
 
 class BookmarkGraphImpl @Inject constructor() : BookmarkGraph {
@@ -19,10 +19,10 @@ class BookmarkGraphImpl @Inject constructor() : BookmarkGraph {
         with(navGraphBuilder) {
             composable(
                 route = BookmarkGraph.BOOK_MARK_ROUTE,
-                popEnterTransition = popEnterTransition,
-                popExitTransition = popExitTransition,
-                enterTransition = enterTransition,
-                exitTransition = exitTransition
+                popEnterTransition = com.example.design.animation.popEnterTransition,
+                popExitTransition = com.example.design.animation.popExitTransition,
+                enterTransition = com.example.design.animation.enterTransition,
+                exitTransition = com.example.design.animation.exitTransition
             ) {
                 BookmarkRoute(navHostController = navHostController)
             }

@@ -1,4 +1,4 @@
-package com.example.ui.theme
+package com.example.design.theme
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
