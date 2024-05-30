@@ -16,5 +16,6 @@ class PagingPreferencesDatastore @Inject constructor(
 ) {
     private val dataStore = context.dataStore
     val pagingKey = dataStore.intPreference("paging_key")
+    val totalCount = dataStore.intPreference("total_count")
 }
 

@@ -1,7 +1,7 @@
 package com.example.domain.usecase.thumbnail
 
 import android.content.Context
-import com.example.data.datasource.stream.ImageStreamRepository
+import com.example.data.repository.ImageStreamRepository
 import com.example.shared.di.IoDispatcher
 import com.example.shared.interaction.SuspendingUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext

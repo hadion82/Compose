@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.example.data.datasource.local.BookmarkLocalDataSource
 import com.example.data.datasource.local.BookmarkLocalDataSourceImpl
 import com.example.data.mapper.BookMarkDataMapper
 import com.example.data.mediator.CharacterMediator
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class CharacterRepositoryImpl @Inject internal constructor(
-    private val localDataSource: BookmarkLocalDataSourceImpl,
+    private val localDataSource: BookmarkLocalDataSource,
     private val characterMediator: CharacterMediator,
     private val bookmarkDataMapper: BookMarkDataMapper
 ) : CharacterRepository {

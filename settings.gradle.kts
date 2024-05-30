@@ -36,5 +36,5 @@ include(":core:datastore:preferences")
 include(":core:datastore:proto")
 
 gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
-include(":core:work")
 include(":feature:profile")
+include(":work")

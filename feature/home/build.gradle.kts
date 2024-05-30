@@ -32,7 +32,11 @@ dependencies {
     implementation(libs.bumptech.glide.compose)
     implementation(libs.accompanist.permissions)
 
+    implementation(libs.androidx.work.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(project(":work"))
 }

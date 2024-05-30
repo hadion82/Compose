@@ -24,10 +24,13 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.tracing.ktx)
     implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.ext.work)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(project(":core:domain"))
+    implementation(project(":core:shared"))
 }

@@ -1,7 +1,8 @@
-package com.example.data.datasource.stream
+package com.example.data.repository
 
 import android.content.Context
 import com.bumptech.glide.Glide
+import com.example.data.repository.ImageStreamRepository
 import com.example.shared.mediator.MediaUtils
 import javax.inject.Inject
 
