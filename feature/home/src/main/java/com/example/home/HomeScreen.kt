@@ -24,16 +24,15 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,12 +50,11 @@ import com.example.ui.common.CharacterContent
 import com.example.ui.common.showSnackBarMessage
 import com.example.design.theme.ComposeTheme
 import com.example.design.theme.DefaultSurface
+import com.example.home.tag.HomeTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 internal class HomeScopedDispatcher(
@@ -228,7 +226,8 @@ internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
         Button(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(4.dp, 2.dp),
+                .padding(4.dp, 2.dp)
+                .testTag(HomeTag.BUTTON_GO_BOOKMARK),
             onClick = { onTitleClick(activity) }
         ) {
             Text(text = stringResource(id = R.string.label_bookmark))
@@ -240,8 +239,8 @@ internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
 internal fun HomeScreen(
     uiState: HomeComposableUiState, presenter: MainPresenter
 ) {
-    com.example.design.theme.ComposeTheme {
-        com.example.design.theme.DefaultSurface {
+    ComposeTheme {
+        DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

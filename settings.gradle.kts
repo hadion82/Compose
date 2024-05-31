@@ -40,3 +40,4 @@ gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:t
 include(":feature:profile")
 include(":work")
 include(":core:design")
+include(":benchmark")

@@ -18,6 +18,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,7 +45,7 @@ internal fun BookmarkRoute(navHostController: NavController, viewModel: Bookmark
 
 @Composable
 internal fun TitleBar() {
-    Box(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth().testTag("bookmark_bar")) {
         Text(
             text = stringResource(id = R.string.label_bookmarks),
             modifier = Modifier
@@ -107,8 +108,8 @@ internal fun BookmarkScreen(
     presenter: BookmarkPresenter
 ) {
     Timber.d("BookmarkScreen")
-    com.example.design.theme.ComposeTheme {
-        com.example.design.theme.DefaultSurface {
+    ComposeTheme {
+        DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

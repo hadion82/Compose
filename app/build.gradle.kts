@@ -27,6 +27,12 @@ android {
         debug {
             applicationIdSuffix = ApplicationBuildType.DEBUG.applicationIdSuffix
         }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
