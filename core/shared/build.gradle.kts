@@ -27,22 +27,10 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.android.compiler)
-
-//    implementation(libs.squareup.javapoet)
-//    ksp(libs.dagger.hilt.compiler)
-//    ksp(libs.androidx.hilt.compiler)
-
     implementation(libs.commons.io)
     implementation(libs.bumptech.glide)
 
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

@@ -50,10 +50,10 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(project(":core:shared"))
-    implementation(project(":core:security"))
-
-    implementation(project(":core:database"))
-    implementation(project(":core:network"))
-    implementation(project(":core:datastore:preferences"))
+    /*Module*/
+    implementation(projects.core.shared)
+    implementation(projects.core.database)
+    implementation(projects.core.network)
+    implementation(projects.core.security)
+    implementation(projects.core.datastore.preferences)
 }

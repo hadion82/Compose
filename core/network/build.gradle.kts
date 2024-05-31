@@ -48,5 +48,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(project(":core:security"))
+    /*Module*/
+    implementation(projects.core.security)
 }

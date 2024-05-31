@@ -47,11 +47,11 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-
     implementation(libs.hilt.ext.work)
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:bookmarks"))
-    implementation(project(":feature:profile"))
-    implementation(project(":work"))
+    /*Module*/
+    implementation(projects.feature.home)
+    implementation(projects.feature.bookmarks)
+    implementation(projects.feature.profile)
+    implementation(projects.work)
 }

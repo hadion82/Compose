@@ -25,9 +25,11 @@ android {
 
 dependencies {
 
-    implementation(project(":core:model"))
     implementation(libs.androidx.dataStore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    /*Module*/
+    implementation(projects.core.model)
 }

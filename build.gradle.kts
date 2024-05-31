@@ -11,13 +11,21 @@ plugins {
     alias(libs.plugins.firebase.perf) apply false
     alias(libs.plugins.room) apply false
 }
-true // Needed to make the Suppress annotation work for the plugins block
 
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
     dependencies {
         classpath(libs.squareup.javapoet)
-//        classpath(libs.google.oss.licenses.plugin) {
-//            exclude(group = "com.google.protobuf")
-//        }
+    }
+}
+
+tasks.register("printModulePaths") {
+    subprojects {
+        if (subprojects.size == 0) {
+            println(this.path)
+        }
     }
 }

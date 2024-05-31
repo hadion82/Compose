@@ -34,7 +34,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(project(":core:model"))
-    implementation(project(":core:data"))
-    implementation(project(":core:shared"))
+    /*Module*/
+    implementation(projects.core.model)
+    implementation(projects.core.shared)
+    implementation(projects.core.data)
 }
