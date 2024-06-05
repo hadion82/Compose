@@ -53,11 +53,14 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    implementation(libs.hilt.ext.work)
+    implementation(libs.androidx.hilt.ext.work)
 
     /*Module*/
     implementation(projects.feature.home)
     implementation(projects.feature.bookmarks)
     implementation(projects.feature.profile)
     implementation(projects.work)
+
+    implementation(projects.core.datastore.proto)
+    implementation(projects.core.notifications)
 }

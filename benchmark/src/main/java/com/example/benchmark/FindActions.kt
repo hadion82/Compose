@@ -10,7 +10,3 @@ fun MacrobenchmarkScope.getTopAppBar(): UiObject2 {
     device.wait(Until.hasObject(By.text("Bookmarks")), 2_000)
     return device.findObject(By.text("Bookmarks"))
 }
-
-fun MacrobenchmarkScope.waitForObjectOnTopAppBar(selector: BySelector, timeout: Long = 2_000) {
-    getTopAppBar().wait(Until.hasObject(selector), timeout)
-}

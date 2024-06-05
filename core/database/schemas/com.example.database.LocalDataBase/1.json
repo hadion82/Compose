@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "21cb1ee646c2f05434d0672f2b1927e0",
+    "identityHash": "f32ee37a3c166bc9237c6c8ebc91c823",
     "entities": [
       {
-        "tableName": "bookmark",
+        "tableName": "characters",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `thumbnail` TEXT, `url_count` INTEGER NOT NULL, `comic_count` INTEGER NOT NULL, `story_count` INTEGER NOT NULL, `event_count` INTEGER NOT NULL, `series_count` INTEGER NOT NULL, `mark` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -78,38 +78,12 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "paging_key",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`type` TEXT NOT NULL, `key` INTEGER NOT NULL, PRIMARY KEY(`type`))",
-        "fields": [
-          {
-            "fieldPath": "type",
-            "columnName": "type",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "key",
-            "columnName": "key",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "type"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '21cb1ee646c2f05434d0672f2b1927e0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f32ee37a3c166bc9237c6c8ebc91c823')"
     ]
   }
 }

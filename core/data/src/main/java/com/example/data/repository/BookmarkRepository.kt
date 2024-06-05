@@ -1,8 +1,7 @@
 package com.example.data.repository
 
 import androidx.paging.PagingData
-import com.example.data.model.BookmarkData
-import com.example.database.model.BookmarkEntity
+import com.example.data.model.CharacterData
 import kotlinx.coroutines.flow.Flow
 
 interface BookmarkRepository {
@@ -15,5 +14,5 @@ interface BookmarkRepository {
 
     fun loadBookmarkIds(): Flow<List<Int>>
 
-    fun loadPagingBookmarks(): Flow<PagingData<BookmarkData>>
+    fun loadPagingBookmarks(): Flow<PagingData<CharacterData>>
 }

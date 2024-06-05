@@ -4,18 +4,18 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.data.datasource.local.BookmarkLocalDataSource
-import com.example.data.datasource.local.BookmarkLocalDataSourceImpl
-import com.example.data.mapper.BookMarkDataMapper
-import com.example.data.model.BookmarkData
+import com.example.data.datasource.local.CharacterLocalDataSource
+import com.example.data.datasource.local.CharacterLocalDataSourceImpl
+import com.example.data.mapper.CharacterDataMapper
+import com.example.data.model.CharacterData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class BookmarkRepositoryImpl @Inject internal constructor(
-    private val dataSource: BookmarkLocalDataSourceImpl,
-    private val bookMarkDataMapper: BookMarkDataMapper
-) : BookmarkRepository, BookmarkLocalDataSource by dataSource {
+    private val dataSource: CharacterLocalDataSourceImpl,
+    private val bookMarkDataMapper: CharacterDataMapper
+) : BookmarkRepository, CharacterLocalDataSource by dataSource {
 
     override suspend fun addBookmark(id: Int) =
         dataSource.addBookmark(id)
@@ -25,7 +25,7 @@ internal class BookmarkRepositoryImpl @Inject internal constructor(
 
     override fun loadBookmarkIds(): Flow<List<Int>> = loadIds()
 
-    override fun loadPagingBookmarks(): Flow<PagingData<BookmarkData>> =
+    override fun loadPagingBookmarks(): Flow<PagingData<CharacterData>> =
         Pager(
             config = PagingConfig(
                 pageSize = 20,

@@ -19,10 +19,10 @@ class BookmarkGraphImpl @Inject constructor() : BookmarkGraph {
         with(navGraphBuilder) {
             composable(
                 route = BookmarkGraph.BOOK_MARK_ROUTE,
-                popEnterTransition = com.example.design.animation.popEnterTransition,
-                popExitTransition = com.example.design.animation.popExitTransition,
-                enterTransition = com.example.design.animation.enterTransition,
-                exitTransition = com.example.design.animation.exitTransition
+                popEnterTransition = popEnterTransition,
+                popExitTransition = popExitTransition,
+                enterTransition = enterTransition,
+                exitTransition = exitTransition
             ) {
                 BookmarkRoute(navHostController = navHostController)
             }

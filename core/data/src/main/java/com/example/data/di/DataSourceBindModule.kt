@@ -1,7 +1,7 @@
 package com.example.data.di
 
-import com.example.data.datasource.local.BookmarkLocalDataSource
-import com.example.data.datasource.local.BookmarkLocalDataSourceImpl
+import com.example.data.datasource.local.CharacterLocalDataSource
+import com.example.data.datasource.local.CharacterLocalDataSourceImpl
 import com.example.data.datasource.remote.CharacterRemoteDataSource
 import com.example.data.datasource.remote.CharacterRemoteDataSourceImpl
 import dagger.Binds
@@ -24,6 +24,6 @@ abstract class DataSourceBindModule {
     @Singleton
     @Binds
     internal abstract fun bindBookmarkLocalDataSource(
-        impl: BookmarkLocalDataSourceImpl
-    ): BookmarkLocalDataSource
+        impl: CharacterLocalDataSourceImpl
+    ): CharacterLocalDataSource
 }

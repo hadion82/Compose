@@ -53,6 +53,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel.compose").get())
                 add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
 
+                add("implementation", libs.findLibrary("kotlinx.coroutines.test").get())
+                add("androidTestImplementation", libs.findLibrary("espresso.core").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.lifecycle.runtime.testing").get())
             }
         }

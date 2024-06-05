@@ -10,11 +10,26 @@ plugins {
 
 android {
     namespace = "com.example.datastore.proto"
+
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
 protobuf {
     protoc {
-        artifact = libs.protobuf.protoc.get().toString()
+        artifact = libs.google.protobuf.protoc.get().toString()
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -59,7 +74,7 @@ androidComponents.onVariants { variant ->
 //}
 
 dependencies {
-    api(libs.protobuf.kotlin.lite)
+    api(libs.google.protobuf.kotlin.lite)
     implementation(libs.androidx.dataStore.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

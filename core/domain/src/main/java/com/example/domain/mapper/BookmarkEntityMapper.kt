@@ -1,13 +1,13 @@
 package com.example.domain.mapper
 
-import com.example.data.model.BookmarkData
+import com.example.data.model.CharacterData
 import com.example.model.MarvelCharacter
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
-class BookmarkEntityMapper @Inject constructor() : Mapper<MarvelCharacter, BookmarkData> {
-    override fun invoke(data: MarvelCharacter): BookmarkData =
-        BookmarkData(
+class BookmarkEntityMapper @Inject constructor() : Mapper<MarvelCharacter, CharacterData> {
+    override fun invoke(data: MarvelCharacter): CharacterData =
+        CharacterData(
             id = data.id,
             name = data.name,
             description = data.description,

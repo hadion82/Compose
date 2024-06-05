@@ -53,9 +53,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 disableUnnecessaryAndroidTests(target)
             }
             dependencies {
-                add("testImplementation", kotlin("test"))
-
                 add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
+
+                add("testImplementation", kotlin("test"))
+                add("testImplementation", libs.findLibrary("junit").get())
+                add("androidTestImplementation", libs.findLibrary("androidx.test.ext.junit").get())
             }
             configureLogging()
         }

@@ -26,19 +26,19 @@ internal abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindsBookmarkRepository(
+    abstract fun bindBookmarkRepository(
         bookmarkRepository: BookmarkRepositoryImpl
     ): BookmarkRepository
 
     @Singleton
     @Binds
-    abstract fun bindsImageStreamRepository(
+    abstract fun bindImageStreamRepository(
         imageStreamRepository: ImageStreamRepositoryImpl
     ): ImageStreamRepository
 
     @Singleton
     @Binds
-    abstract fun bindsSyncRepository(
+    abstract fun bindSyncRepository(
         syncRepository: SyncRepositoryImpl
     ): SyncRepository
 }
