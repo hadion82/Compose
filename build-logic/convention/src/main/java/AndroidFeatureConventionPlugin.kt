@@ -29,6 +29,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("convention.android.library")
                 apply("convention.android.hilt")
+                apply("convention.android.library.jacoco")
             }
             extensions.configure<LibraryExtension> {
                 defaultConfig {

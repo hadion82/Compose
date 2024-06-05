@@ -10,7 +10,6 @@ plugins {
 
 android {
     namespace = "com.example.compose"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.compose"
