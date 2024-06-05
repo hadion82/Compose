@@ -21,10 +21,10 @@ internal class ProfileGraphImpl @Inject constructor() : ProfileGraph {
             arguments = listOf(navArgument(ProfileGraph.Argument.PROFILE_ID) {
                 type = NavType.IntType
             }),
-            popEnterTransition = com.example.design.animation.popEnterTransition,
-            popExitTransition = com.example.design.animation.popExitTransition,
-            enterTransition = com.example.design.animation.enterTransition,
-            exitTransition = com.example.design.animation.exitTransition
+            popEnterTransition = popEnterTransition,
+            popExitTransition = popExitTransition,
+            enterTransition = enterTransition,
+            exitTransition = exitTransition
         ) { entry ->
             val id = entry.arguments?.getInt(ProfileGraph.Argument.PROFILE_ID) ?: return@composable
             ProfileRoute(id = id)

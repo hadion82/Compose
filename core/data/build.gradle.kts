@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.convention.android.library)
@@ -36,10 +34,6 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-
     implementation(libs.squareup.retrofit2.retrofit)
     implementation(libs.squareup.retrofit2.converter.gson)
 
@@ -47,9 +41,7 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.timber)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.androidx.paging.testing)
 
     /*Module*/
     implementation(projects.core.shared)
@@ -57,4 +49,5 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.security)
     implementation(projects.core.datastore.preferences)
+    implementation(projects.core.testing)
 }

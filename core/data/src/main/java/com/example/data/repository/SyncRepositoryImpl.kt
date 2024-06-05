@@ -1,32 +1,29 @@
 package com.example.data.repository
 
-import com.example.data.datasource.local.BookmarkLocalDataSource
+import com.example.data.datasource.local.CharacterLocalDataSource
 import com.example.data.datasource.remote.CharacterRemoteDataSource
-import com.example.data.mapper.BookMarkEntityMapper
 import com.example.data.mapper.CharacterEntityMapper
+import com.example.data.mapper.CharacterUpdatingEntityMapper
+import com.example.datastore.preferences.PagingPreferencesDatastore
 import com.example.network.model.Character
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class SyncRepositoryImpl @Inject constructor(
-    characterRemoteDataSource: CharacterRemoteDataSource,
-    bookmarkLocalDataSource: BookmarkLocalDataSource,
-    private val bookmarkMapper: BookMarkEntityMapper,
-    private val characterMapper: CharacterEntityMapper
-) : SyncRepository, CharacterRemoteDataSource by characterRemoteDataSource,
-    BookmarkLocalDataSource by bookmarkLocalDataSource {
-    override suspend fun syncCharacters(offset: Int, limit: Int) {
-        val results = getCharacters(offset, limit).data?.results
-        requireNotNull(results)
-        updateCharacters(results)
-    }
+class SyncRepositoryImpl @Inject internal constructor(
+    localDataSource: CharacterLocalDataSource,
+    remoteDataSource: CharacterRemoteDataSource,
+    private val characterEntityMapper: CharacterEntityMapper,
+    private val updatingEntityMapper: CharacterUpdatingEntityMapper
+) : SyncRepository,
+    CharacterLocalDataSource by localDataSource,
+    CharacterRemoteDataSource by remoteDataSource {
 
-    override suspend fun updateCharacters(results: List<Character>) {
+    override suspend fun syncCharacters(results: List<Character>) {
         Timber.d("Mediator data : $results")
         val responseIds = results.mapNotNull { it.id }
         val savedIds = getIds(responseIds)
-        val(saved, new) = results.filter { it.id != null }.partition { savedIds.contains(it.id) }
-        update(saved.map(characterMapper))
-        insert(*new.map(bookmarkMapper).toTypedArray())
+        val (saved, new) = results.filter { it.id != null }.partition { savedIds.contains(it.id) }
+        update(saved.map(updatingEntityMapper))
+        insert(*new.map(characterEntityMapper).toTypedArray())
     }
 }

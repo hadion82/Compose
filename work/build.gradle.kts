@@ -26,7 +26,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.work.ktx)
-    implementation(libs.hilt.ext.work)
+    implementation(libs.androidx.hilt.ext.work)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

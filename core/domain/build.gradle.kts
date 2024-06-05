@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.commons.io)
 
     testImplementation(libs.junit)
+    implementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -39,4 +40,6 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.shared)
     implementation(projects.core.data)
+    
+    implementation(projects.core.testing)
 }

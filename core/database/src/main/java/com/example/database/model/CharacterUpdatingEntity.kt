@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "bookmark")
-data class BookmarkEntity(
+@Entity
+data class CharacterUpdatingEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
@@ -32,8 +32,5 @@ data class BookmarkEntity(
     val eventCount: Int,
 
     @ColumnInfo(name = "series_count")
-    val seriesCount: Int,
-
-    @ColumnInfo(name = "mark", defaultValue = "0")
-    val mark: Boolean
+    val seriesCount: Int
 )

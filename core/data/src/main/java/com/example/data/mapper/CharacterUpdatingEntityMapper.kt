@@ -1,13 +1,13 @@
 package com.example.data.mapper
 
-import com.example.database.model.BookmarkEntity
+import com.example.database.model.CharacterUpdatingEntity
 import com.example.network.model.Character
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
-class BookMarkEntityMapper @Inject constructor(): Mapper<Character, BookmarkEntity> {
-    override fun invoke(data: Character): BookmarkEntity =
-        BookmarkEntity(
+class CharacterUpdatingEntityMapper @Inject constructor(): Mapper<Character, CharacterUpdatingEntity> {
+    override fun invoke(data: Character): CharacterUpdatingEntity =
+        CharacterUpdatingEntity(
             id = data.id ?: -1,
             name = data.name,
             description = data.description,
@@ -18,8 +18,7 @@ class BookMarkEntityMapper @Inject constructor(): Mapper<Character, BookmarkEnti
             comicCount = data.comics?.items?.size ?: 0,
             storyCount = data.stories?.items?.size ?: 0,
             eventCount = data.events?.items?.size ?: 0,
-            seriesCount = data.series?.items?.size ?: 0,
-            mark = false
+            seriesCount = data.series?.items?.size ?: 0
         )
 
     private fun String.toHttpsFormat() =

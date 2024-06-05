@@ -18,7 +18,8 @@ class CharacterEntityMapper @Inject constructor(): Mapper<Character, CharacterEn
             comicCount = data.comics?.items?.size ?: 0,
             storyCount = data.stories?.items?.size ?: 0,
             eventCount = data.events?.items?.size ?: 0,
-            seriesCount = data.series?.items?.size ?: 0
+            seriesCount = data.series?.items?.size ?: 0,
+            mark = false
         )
 
     private fun String.toHttpsFormat() =

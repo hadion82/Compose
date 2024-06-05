@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.testing
 
 import org.junit.Test
 
@@ -9,6 +9,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {

@@ -1,6 +1,6 @@
 package com.example.data.model
 
-data class BookmarkData(
+data class CharacterData(
     val id: Int,
     val name: String?,
     val description: String?,

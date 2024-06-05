@@ -1,12 +1,13 @@
 package com.example.database.di
 
 import com.example.database.LocalDataBase
-import com.example.database.dao.BookmarkDao
-import com.example.database.dao.PagingKeyDao
+import com.example.database.dao.CharacterDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,10 +16,5 @@ internal object DaoModule {
     @Provides
     fun providesBookmarkDao(
         dataBase: LocalDataBase
-    ): BookmarkDao = dataBase.bookmarkDao()
-
-    @Provides
-    fun providesPagingKeyDao(
-        dataBase: LocalDataBase
-    ): PagingKeyDao = dataBase.pagingKeyDao()
+    ): CharacterDao = dataBase.bookmarkDao()
 }

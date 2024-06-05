@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.example.data.repository.SyncRepository
-import com.example.database.model.BookmarkEntity
+import com.example.database.model.CharacterEntity
 import com.example.datastore.preferences.PagingPreferencesDatastore
 import timber.log.Timber
 import javax.inject.Inject
@@ -13,8 +13,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 internal class CharacterMediator @Inject internal constructor(
     syncRepository: SyncRepository,
-    private val dataStore: PagingPreferencesDatastore
-) : RemoteMediator<Int, BookmarkEntity>(),
+    private val dataStore: PagingPreferencesDatastore,
+) : RemoteMediator<Int, CharacterEntity>(),
     SyncRepository by syncRepository {
 
     companion object {
@@ -24,10 +24,11 @@ internal class CharacterMediator @Inject internal constructor(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, BookmarkEntity>
+        state: PagingState<Int, CharacterEntity>
     ): MediatorResult {
-        val pagingKey = getKeyByLoadType(loadType) ?:
-        return MediatorResult.Success(endOfPaginationReached = true)
+        val pagingKey = getKeyByLoadType(loadType) ?: return MediatorResult.Success(
+            endOfPaginationReached = true
+        )
 
         Timber.d("Mediator key : $pagingKey")
 
@@ -56,7 +57,7 @@ internal class CharacterMediator @Inject internal constructor(
         val response = getCharacters(offset, PAGE_LIMIT)
         val results = response.data?.results
         requireNotNull(results)
-        updateCharacters(results)
+        syncCharacters(results)
         return updateOffset(offset) >= updateTotalCount(response.data?.total)
     }
 
