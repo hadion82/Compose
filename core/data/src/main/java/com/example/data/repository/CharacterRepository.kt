@@ -19,4 +19,9 @@ interface CharacterRepository {
         @IntRange(from = 0) offset: Int,
         @IntRange(from = 0, to = 100) limit: Int
     ): CharacterDataWrapper
+
+    companion object {
+        const val PAGE_SIZE = 20
+        const val PREFETCH_DISTANCE = 20
+    }
 }

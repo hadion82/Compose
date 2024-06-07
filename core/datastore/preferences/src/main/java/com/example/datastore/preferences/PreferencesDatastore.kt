@@ -4,17 +4,16 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.example.datastore.preferences.di.LocalPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences")
+internal val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences")
 
 @Singleton
-class PagingPreferencesDatastore @Inject constructor(
-    @ApplicationContext private val context: Context,
+open class PreferencesDatastore @Inject constructor(
+    @LocalPreferences dataStore: DataStore<Preferences>
 ) {
-    private val dataStore = context.dataStore
     val pagingKey = dataStore.intPreference("paging_key")
     val totalCount = dataStore.intPreference("total_count")
 }

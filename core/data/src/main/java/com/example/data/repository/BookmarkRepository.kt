@@ -12,7 +12,5 @@ interface BookmarkRepository {
     @Throws(Exception::class)
     suspend fun removeBookmark(id: Int)
 
-    fun loadBookmarkIds(): Flow<List<Int>>
-
     fun loadPagingBookmarks(): Flow<PagingData<CharacterData>>
 }

@@ -39,4 +39,7 @@ interface CharacterDao : BaseDao<CharacterEntity> {
 
     @Query("UPDATE characters SET mark = :mark WHERE id = :id")
     suspend fun updateBookmark(id: Int, mark: Boolean)
+
+    @Query("DELETE FROM characters")
+    suspend fun deleteAll()
 }

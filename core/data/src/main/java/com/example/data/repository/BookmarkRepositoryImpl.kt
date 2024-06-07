@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class BookmarkRepositoryImpl @Inject internal constructor(
-    private val dataSource: CharacterLocalDataSourceImpl,
+    private val dataSource: CharacterLocalDataSource,
     private val bookMarkDataMapper: CharacterDataMapper
 ) : BookmarkRepository, CharacterLocalDataSource by dataSource {
 
@@ -22,8 +22,6 @@ internal class BookmarkRepositoryImpl @Inject internal constructor(
 
     override suspend fun removeBookmark(id: Int) =
         dataSource.removeBookmark(id)
-
-    override fun loadBookmarkIds(): Flow<List<Int>> = loadIds()
 
     override fun loadPagingBookmarks(): Flow<PagingData<CharacterData>> =
         Pager(

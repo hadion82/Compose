@@ -34,7 +34,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 defaultConfig {
                     testInstrumentationRunner =
-                        "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+                        "androidx.test.runner.AndroidJUnitRunner"
                 }
                 testOptions.animationsDisabled = true
                 configureGradleManagedDevices(this)
@@ -57,6 +57,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("kotlinx.coroutines.test").get())
                 add("androidTestImplementation", libs.findLibrary("espresso.core").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.lifecycle.runtime.testing").get())
+                add("androidTestImplementation", libs.findLibrary("androidx.compose.ui.test.junit4").get())
+                add("debugImplementation", libs.findLibrary("androidx.compose.ui.test.manifest").get())
             }
         }
     }

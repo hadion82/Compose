@@ -1,9 +1,9 @@
 package com.example.database
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.database.dao.CharacterDao
-import com.example.database.test.MemoryLocalDatabase
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -25,10 +25,12 @@ class LocalDatabaseUnitTest {
     private val dispatcher = StandardTestDispatcher()
 
     private lateinit var bookmarkDao: CharacterDao
+
     @Before
     fun setUp() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        val database = MemoryLocalDatabase.create(context)
+        val database = Room.inMemoryDatabaseBuilder(context, LocalDataBase::class.java)
+            .build()
         bookmarkDao = database.characterDao()
     }
 

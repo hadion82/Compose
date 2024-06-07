@@ -7,7 +7,6 @@ android {
     namespace = "com.example.bookmarks"
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

@@ -6,14 +6,14 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.example.data.repository.SyncRepository
 import com.example.database.model.CharacterEntity
-import com.example.datastore.preferences.PagingPreferencesDatastore
+import com.example.datastore.preferences.PreferencesDatastore
 import timber.log.Timber
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 internal class CharacterMediator @Inject internal constructor(
     syncRepository: SyncRepository,
-    private val dataStore: PagingPreferencesDatastore,
+    private val dataStore: PreferencesDatastore
 ) : RemoteMediator<Int, CharacterEntity>(),
     SyncRepository by syncRepository {
 

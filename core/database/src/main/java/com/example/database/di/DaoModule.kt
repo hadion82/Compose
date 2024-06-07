@@ -6,7 +6,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 
 @Module
@@ -16,5 +15,5 @@ internal object DaoModule {
     @Provides
     fun providesBookmarkDao(
         dataBase: LocalDataBase
-    ): CharacterDao = dataBase.bookmarkDao()
+    ): CharacterDao = dataBase.characterDao()
 }

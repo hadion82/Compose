@@ -7,7 +7,12 @@ plugins {
 android {
     namespace = "com.example.testing"
 
-    testOptions.unitTests.isIncludeAndroidResources = true
+//    testOptions.unitTests.isIncludeAndroidResources = true
+
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {
@@ -17,10 +22,12 @@ dependencies {
     api(libs.robolectric)
     api(libs.mockito.inline)
     api(libs.mockito.kotlin2)
-    api(libs.hamcrest)
+
+    implementation(libs.androidx.dataStore.preferences)
 
     implementation(projects.core.shared)
     implementation(projects.core.model)
     implementation(projects.core.database)
     implementation(projects.core.network)
+    implementation(projects.core.datastore.preferences)
 }

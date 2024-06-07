@@ -10,6 +10,8 @@ import com.example.data.datasource.remote.CharacterRemoteDataSource
 import com.example.data.mapper.CharacterDataMapper
 import com.example.data.mediator.CharacterMediator
 import com.example.data.model.CharacterData
+import com.example.data.repository.CharacterRepository.Companion.PAGE_SIZE
+import com.example.data.repository.CharacterRepository.Companion.PREFETCH_DISTANCE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -39,8 +41,5 @@ internal class CharacterRepositoryImpl @Inject internal constructor(
     override suspend fun getCharacterById(id: Int): CharacterData? =
         localDataSource.getCharactersById(id)?.let(characterDataMapper)
 
-    companion object {
-        const val PAGE_SIZE = 20
-        const val PREFETCH_DISTANCE = 20
-    }
+
 }

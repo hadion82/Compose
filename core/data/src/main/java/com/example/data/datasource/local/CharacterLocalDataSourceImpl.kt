@@ -1,8 +1,8 @@
 package com.example.data.datasource.local
 
 import androidx.paging.PagingSource
-import com.example.database.model.CharacterEntity
 import com.example.database.dao.CharacterDao
+import com.example.database.model.CharacterEntity
 import com.example.database.model.CharacterUpdatingEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -10,7 +10,6 @@ import javax.inject.Inject
 internal class CharacterLocalDataSourceImpl @Inject constructor(
     private val characterDao: CharacterDao
 ) : CharacterLocalDataSource {
-
     override suspend fun insert(vararg values: CharacterEntity) =
         characterDao.insertOrReplace(*values)
 

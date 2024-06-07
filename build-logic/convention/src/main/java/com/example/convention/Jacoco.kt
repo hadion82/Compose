@@ -30,6 +30,9 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.test
+import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy
+import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy.SourceSetTree.Companion.test
 import java.util.Locale
 
 private val coverageExclusions = listOf(
@@ -82,6 +85,8 @@ internal fun Project.configureJacoco(
                     xml.required.set(true)
                     html.required.set(true)
                 }
+
+                dependsOn(tasks.getByName("test"))
 
                 // TODO: This is missing files in src/debug/, src/prod, src/demo, src/demoDebug...
                 sourceDirectories.setFrom(files("$projectDir/src/main/java", "$projectDir/src/main/kotlin"))
