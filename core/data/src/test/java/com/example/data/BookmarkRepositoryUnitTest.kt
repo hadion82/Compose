@@ -1,9 +1,7 @@
 package com.example.data
 
-import androidx.paging.testing.ErrorRecovery
 import androidx.paging.testing.asSnapshot
 import com.example.testing.coroutine.runTest
-import com.example.testing.data.FakeMarvelCharacterData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -19,25 +17,27 @@ import org.robolectric.annotation.Config
 
 @Config(manifest = Config.NONE)
 @RunWith(RobolectricTestRunner::class)
-internal class BookmarkRepositoryUnitTest: RepositoryUnitTest() {
+internal class BookmarkRepositoryUnitTest : RepositoryUnitTest() {
 
     @Test
-    fun updateBookmark_CheckValue() = mainCoroutineRule.runTest {
+    fun updateBookmark_clickBookmark_CheckValue() = mainCoroutineRule.runTest {
         safeTransaction {
-            val results = syncRepository.getCharacters(1, 5).data?.results
+            val results = syncRepository.getCharacters(1, 5).results
             assertNotNull(results)
-            syncRepository.syncCharacters(results!!)
-            bookmarkRepository.addBookmark(results[0].id!!)
-            bookmarkRepository.addBookmark(results[1].id!!)
-            bookmarkRepository.addBookmark(INVALID_ID)
-            val added = bookmarkRepository.loadPagingBookmarks().asSnapshot()
-            assertEquals(2, added.size)
+            syncRepository.updateCharacters(results)
+            with(bookmarkRepository) {
+                addBookmark(results[0].id)
+                addBookmark(results[1].id)
+                addBookmark(INVALID_ID)
+                val added = loadPagingBookmarks().asSnapshot()
+                assertEquals(2, added.size)
 
-            bookmarkRepository.removeBookmark(results[0].id!!)
-            bookmarkRepository.removeBookmark(results[1].id!!)
-            bookmarkRepository.removeBookmark(INVALID_ID)
-            val removed = bookmarkRepository.loadPagingBookmarks().asSnapshot()
-            assertEquals(0, removed.size)
+                removeBookmark(results[0].id)
+                removeBookmark(results[1].id)
+                removeBookmark(INVALID_ID)
+                val removed = loadPagingBookmarks().asSnapshot()
+                assertEquals(0, removed.size)
+            }
         }
     }
 }

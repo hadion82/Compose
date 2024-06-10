@@ -7,9 +7,11 @@ import com.example.data.datasorce.CharacterRemoteTestingDataSource
 import com.example.data.datasource.local.CharacterLocalDataSource
 import com.example.data.datasource.local.CharacterLocalDataSourceImpl
 import com.example.data.datasource.remote.CharacterRemoteDataSource
-import com.example.data.mapper.CharacterDataMapper
-import com.example.data.mapper.CharacterEntityMapper
-import com.example.data.mapper.CharacterUpdatingEntityMapper
+import com.example.data.mapper.EntityToDataMapper
+import com.example.data.mapper.DataToEntityMapper
+import com.example.data.mapper.DataToUpdatingEntityMapper
+import com.example.data.mapper.RemoteToDataMapper
+import com.example.data.mapper.RemoteToResponseMapper
 import com.example.data.mediator.CharacterMediator
 import com.example.data.repository.BookmarkRepository
 import com.example.data.repository.BookmarkRepositoryImpl
@@ -60,11 +62,13 @@ internal abstract class RepositoryUnitTest {
 
     private lateinit var pagingPreference: PreferencesDatastore
 
-    protected val characterEntityMapper = CharacterEntityMapper()
+    protected val characterEntityMapper = DataToEntityMapper()
 
-    protected val characterUpdatingEntityMapper = CharacterUpdatingEntityMapper()
+    protected val characterUpdatingEntityMapper = DataToUpdatingEntityMapper()
 
-    private val characterDataMapper = CharacterDataMapper()
+    protected val remoteToResponseMapper = RemoteToResponseMapper(RemoteToDataMapper())
+
+    private val characterDataMapper = EntityToDataMapper()
 
 
     @Before
@@ -75,7 +79,7 @@ internal abstract class RepositoryUnitTest {
         ).build()
         characterDao = database.characterDao()
         characterLocalDataSource = CharacterLocalDataSourceImpl(characterDao)
-        characterRemoteDataSource = CharacterRemoteTestingDataSource()
+        characterRemoteDataSource = CharacterRemoteTestingDataSource(remoteToResponseMapper)
 
         pagingPreference = TestingPreferencesDatastore(context)
 
@@ -102,7 +106,7 @@ internal abstract class RepositoryUnitTest {
         )
     }
 
-    protected suspend fun createCharacterRepository(characterDataSource: CharacterRemoteDataSource): CharacterRepository {
+    protected fun createCharacterRepository(characterDataSource: CharacterRemoteDataSource): CharacterRepository {
         val syncExceptionRepository = SyncRepositoryImpl(
             localDataSource = characterLocalDataSource,
             remoteDataSource = characterDataSource,

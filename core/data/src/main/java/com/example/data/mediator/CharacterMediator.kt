@@ -55,10 +55,9 @@ internal class CharacterMediator @Inject internal constructor(
 
     private suspend fun updateResource(offset: Int): Boolean {
         val response = getCharacters(offset, PAGE_LIMIT)
-        val results = response.data?.results
-        requireNotNull(results)
-        syncCharacters(results)
-        return updateOffset(offset) >= updateTotalCount(response.data?.total)
+        val results = response.results
+        updateCharacters(results)
+        return updateOffset(offset) >= updateTotalCount(response.total)
     }
 
     private suspend fun updateTotalCount(total: Int?): Int {

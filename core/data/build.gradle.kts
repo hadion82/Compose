@@ -44,6 +44,7 @@ dependencies {
     testImplementation(libs.androidx.paging.testing)
 
     /*Module*/
+    implementation(projects.core.model)
     implementation(projects.core.shared)
     implementation(projects.core.database)
     implementation(projects.core.network)

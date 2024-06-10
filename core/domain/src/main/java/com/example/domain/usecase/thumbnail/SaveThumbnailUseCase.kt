@@ -1,6 +1,7 @@
 package com.example.domain.usecase.thumbnail
 
 import android.content.Context
+import android.net.Uri
 import com.example.data.repository.ImageStreamRepository
 import com.example.shared.di.IoDispatcher
 import com.example.shared.interaction.SuspendingUseCase
@@ -13,12 +14,12 @@ class SaveThumbnailUseCase @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context,
     private val repository: ImageStreamRepository
-) : SuspendingUseCase<SaveThumbnailUseCase.Params, Unit>(dispatcher) {
+) : SuspendingUseCase<SaveThumbnailUseCase.Params, Uri>(dispatcher) {
 
-    override suspend fun execute(params: Params) {
+    override suspend fun execute(params: Params): Uri? {
         val url = params.url
         requireNotNull(url)
-        repository.download(
+        return repository.download(
             context = context,
             url = url,
             dir = "/MARVEL",

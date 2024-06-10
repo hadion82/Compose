@@ -1,5 +1,6 @@
 package com.example.testing.data
 
+import com.example.model.CharacterData
 import com.example.network.model.Character
 import com.example.network.model.CharacterDataContainer
 import com.example.network.model.CharacterDataWrapper
@@ -79,6 +80,20 @@ object FakeMarvelCharacterData {
         }
         return list
     }
+
+    fun createCharacterData(index: Int) =
+        CharacterData(
+            id = index,
+            name = "name$index",
+            description = "description$index",
+            thumbnail = "thumbnail$index",
+            urlCount = 0,
+            comicCount = 0,
+            storyCount = 0,
+            eventCount = 0,
+            seriesCount = 0,
+            mark = false
+        )
 
     fun createCharacter(index: Int?) =
         Character(

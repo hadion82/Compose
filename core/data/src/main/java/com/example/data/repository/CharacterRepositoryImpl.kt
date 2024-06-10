@@ -7,9 +7,9 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.data.datasource.local.CharacterLocalDataSource
 import com.example.data.datasource.remote.CharacterRemoteDataSource
-import com.example.data.mapper.CharacterDataMapper
+import com.example.data.mapper.EntityToDataMapper
 import com.example.data.mediator.CharacterMediator
-import com.example.data.model.CharacterData
+import com.example.model.CharacterData
 import com.example.data.repository.CharacterRepository.Companion.PAGE_SIZE
 import com.example.data.repository.CharacterRepository.Companion.PREFETCH_DISTANCE
 import kotlinx.coroutines.flow.Flow
@@ -20,12 +20,12 @@ internal class CharacterRepositoryImpl @Inject internal constructor(
     private val localDataSource: CharacterLocalDataSource,
     private val remoteDataSource: CharacterRemoteDataSource,
     private val characterMediator: CharacterMediator,
-    private val characterDataMapper: CharacterDataMapper,
+    private val characterDataMapper: EntityToDataMapper,
 ) : CharacterRepository,
     CharacterLocalDataSource by localDataSource,
     CharacterRemoteDataSource by remoteDataSource {
     @OptIn(ExperimentalPagingApi::class)
-    override fun loadPagingData(): Flow<PagingData<CharacterData>> =
+    override fun loadPagingData(): Flow<PagingData<com.example.model.CharacterData>> =
         Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
@@ -38,7 +38,7 @@ internal class CharacterRepositoryImpl @Inject internal constructor(
             }
         ).flow.map { paging -> paging.map(characterDataMapper) }
 
-    override suspend fun getCharacterById(id: Int): CharacterData? =
+    override suspend fun getCharacterById(id: Int): com.example.model.CharacterData? =
         localDataSource.getCharactersById(id)?.let(characterDataMapper)
 
 

@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.androidx.paging.testing)
 
     /*Module*/
     implementation(projects.core.model)

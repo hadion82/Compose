@@ -2,12 +2,14 @@ package com.example.shared.mediator
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Environment.*
 import android.os.FileUtils
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -16,7 +18,7 @@ import java.io.IOException
 
 interface SdkDelegate {
     @Throws(IOException::class, FileNotFoundException::class)
-    fun copyToDownload(context: Context, inputFile: File, dir: String, fileName: String)
+    fun copyToDownload(context: Context, inputFile: File, dir: String, fileName: String): Uri?
 }
 
 object MediaUtils : SdkDelegate {
@@ -26,10 +28,9 @@ object MediaUtils : SdkDelegate {
             MimeTypeMap.getFileExtensionFromUrl(fileName)
         )
 
-    override fun copyToDownload(context: Context, inputFile: File, dir: String, fileName: String) {
+    override fun copyToDownload(context: Context, inputFile: File, dir: String, fileName: String) =
         (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Q else P)
             .copyToDownload(context, inputFile, dir, fileName)
-    }
 
     object Q : SdkDelegate {
         @RequiresApi(Build.VERSION_CODES.Q)
@@ -38,18 +39,21 @@ object MediaUtils : SdkDelegate {
             inputFile: File,
             dir: String,
             fileName: String
-        ) {
+        ): Uri? {
             val mimeType = getMimeType(fileName)
             val values = getValues(dir, fileName, mimeType ?: "image/*")
             val collection = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL)
             with(context.contentResolver) {
-                insert(collection, values)?.let {
-                    openFileDescriptor(it, "w", null)?.use { fd ->
-                        FileUtils.copy(FileInputStream(inputFile), FileOutputStream(fd.fileDescriptor))
+                return insert(collection, values)?.also { uri ->
+                    openFileDescriptor(uri, "w", null)?.use { fd ->
+                        FileUtils.copy(
+                            FileInputStream(inputFile),
+                            FileOutputStream(fd.fileDescriptor)
+                        )
                     }
                     values.clear()
                     values.put(MediaStore.MediaColumns.IS_PENDING, 0)
-                    update(it, values, null, null)
+                    update(uri, values, null, null)
                 }
             }
         }
@@ -73,13 +77,14 @@ object MediaUtils : SdkDelegate {
             inputFile: File,
             dir: String,
             fileName: String
-        ) {
+        ): Uri {
             val outputFile = File(externalDownloadsDir(dir), fileName)
             FileOutputStream(outputFile).use { fos ->
-                FileInputStream(inputFile).use {fis ->
+                FileInputStream(inputFile).use { fis ->
                     fis.copyTo(fos)
                 }
             }
+            return outputFile.toUri()
         }
 
         private fun externalDownloadsDir(dir: String) =

@@ -1,7 +1,7 @@
 package com.example.data.repository
 
 import androidx.paging.PagingData
-import com.example.data.model.CharacterData
+import com.example.model.CharacterData
 import kotlinx.coroutines.flow.Flow
 
 interface BookmarkRepository {
@@ -12,5 +12,5 @@ interface BookmarkRepository {
     @Throws(Exception::class)
     suspend fun removeBookmark(id: Int)
 
-    fun loadPagingBookmarks(): Flow<PagingData<CharacterData>>
+    fun loadPagingBookmarks(): Flow<PagingData<com.example.model.CharacterData>>
 }

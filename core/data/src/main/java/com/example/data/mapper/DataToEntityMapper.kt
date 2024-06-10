@@ -1,13 +1,13 @@
-package com.example.domain.mapper
+package com.example.data.mapper
 
-import com.example.data.model.CharacterData
-import com.example.model.MarvelCharacter
+import com.example.model.CharacterData
+import com.example.database.model.CharacterEntity
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
-class MarvelCharacterMapper @Inject constructor() : Mapper<CharacterData, MarvelCharacter> {
-    override fun invoke(data: CharacterData): MarvelCharacter =
-        MarvelCharacter(
+class DataToEntityMapper @Inject constructor(): Mapper<com.example.model.CharacterData, CharacterEntity> {
+    override fun invoke(data: com.example.model.CharacterData): CharacterEntity =
+        CharacterEntity(
             id = data.id,
             name = data.name,
             description = data.description,
@@ -17,6 +17,6 @@ class MarvelCharacterMapper @Inject constructor() : Mapper<CharacterData, Marvel
             storyCount = data.storyCount,
             eventCount = data.eventCount,
             seriesCount = data.seriesCount,
-            mark = data.mark
+            mark = false
         )
 }

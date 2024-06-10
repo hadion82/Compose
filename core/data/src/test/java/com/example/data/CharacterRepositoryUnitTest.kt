@@ -50,7 +50,7 @@ internal class CharacterRepositoryUnitTest : RepositoryUnitTest() {
     fun getPagingData_CheckNullData() = mainCoroutineRule.runTest {
         safeTransaction {
             val characterExceptionRepository =
-                createCharacterRepository(CharacterRemoteTestingNullDataSource())
+                createCharacterRepository(CharacterRemoteTestingNullDataSource(remoteToResponseMapper))
             val pagedData = characterExceptionRepository.loadPagingData().asSnapshot(
                 onError = { ErrorRecovery.RETURN_CURRENT_SNAPSHOT }
             )
@@ -62,20 +62,20 @@ internal class CharacterRepositoryUnitTest : RepositoryUnitTest() {
     fun getPagingData_CheckTotalNullData() = mainCoroutineRule.runTest {
         safeTransaction {
             val characterExceptionRepository =
-                createCharacterRepository(CharacterRemoteTestingTotalNullDataSource())
+                createCharacterRepository(CharacterRemoteTestingTotalNullDataSource(remoteToResponseMapper))
             val pagedData = characterExceptionRepository.loadPagingData().asSnapshot(
                 onError = { ErrorRecovery.RETURN_CURRENT_SNAPSHOT },
                 loadOperations = {this.scrollTo(10)}
             )
-            assertEquals(CharacterRepository.PAGE_SIZE * 3, pagedData.size)
+            assertEquals(CharacterRepository.PAGE_SIZE, pagedData.size)
         }
     }
 
     @Test
     fun nullIdCharacterMapper_CheckValue() = mainCoroutineRule.runTest {
-        val results = syncRepository.getCharacters(1, 5).data?.results
-        val resultsWithNull = results!!.toMutableList().apply {
-            add(FakeMarvelCharacterData.createCharacter(null))
+        val results = syncRepository.getCharacters(1, 5).results
+        val resultsWithNull = results.toMutableList().apply {
+            add(FakeMarvelCharacterData.createCharacterData(-1))
         }
         println("$resultsWithNull")
         assertEquals(INVALID_ID, resultsWithNull.map(characterEntityMapper).last().id)
@@ -85,19 +85,16 @@ internal class CharacterRepositoryUnitTest : RepositoryUnitTest() {
     @Test
     fun syncCharacter_CheckInsertValue() = mainCoroutineRule.runTest {
         safeTransaction {
-            val results = syncRepository.getCharacters(1, 5).data?.results
+            val results = syncRepository.getCharacters(1, 5).results
             assertNotNull(results)
-            val resultsWithNull = results?.toMutableList()?.apply {
-                add(FakeMarvelCharacterData.createCharacter(null))
-            }
-            syncRepository.syncCharacters(resultsWithNull!!)
+            syncRepository.updateCharacters(results)
             val inserted = characterDao.getAll()
             val expected = results.map(characterEntityMapper)
             assertEquals(expected, inserted)
 
-            val firstItem = characterRepository.getCharacterById(results[0].id!!)
+            val firstItem = characterRepository.getCharacterById(results[0].id)
             assertNotNull(firstItem)
-            assertEquals(results[0].id!!, firstItem!!.id)
+            assertEquals(results[0].id, firstItem!!.id)
 
             val noItem = characterRepository.getCharacterById(INVALID_ID)
             assertNull(noItem)
@@ -110,12 +107,12 @@ internal class CharacterRepositoryUnitTest : RepositoryUnitTest() {
             val limit = 5
             val firstOffset = 1
             val secondOffset = 3
-            val firstResults = syncRepository.getCharacters(firstOffset, limit).data?.results
+            val firstResults = syncRepository.getCharacters(firstOffset, limit).results
             assertNotNull(firstResults)
-            syncRepository.syncCharacters(firstResults!!)
-            val secondResults = syncRepository.getCharacters(secondOffset, limit).data?.results
+            syncRepository.updateCharacters(firstResults)
+            val secondResults = syncRepository.getCharacters(secondOffset, limit).results
             assertNotNull(secondResults)
-            syncRepository.syncCharacters(secondResults!!)
+            syncRepository.updateCharacters(secondResults)
             val inserted = characterDao.getAll()
             val offsetDiff = secondOffset - firstOffset
             assertEquals((limit * 2) - secondOffset, inserted.size)

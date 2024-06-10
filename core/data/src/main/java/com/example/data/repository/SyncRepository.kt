@@ -1,15 +1,15 @@
 package com.example.data.repository
 
 import androidx.annotation.IntRange
-import com.example.network.model.Character
-import com.example.network.model.CharacterDataWrapper
+import com.example.model.CharacterData
+import com.example.data.model.CharacterResponse
 
 interface SyncRepository {
 
     suspend fun getCharacters(
         @IntRange(from = 0) offset: Int,
         @IntRange(from = 0, to = 100) limit: Int
-    ): CharacterDataWrapper
+    ): CharacterResponse
 
-    suspend fun syncCharacters(results: List<Character>)
+    suspend fun updateCharacters(results: List<CharacterData>)
 }

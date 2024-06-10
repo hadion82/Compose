@@ -30,9 +30,6 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.test
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy.SourceSetTree.Companion.test
 import java.util.Locale
 
 private val coverageExclusions = listOf(
@@ -42,7 +39,14 @@ private val coverageExclusions = listOf(
     "**/BuildConfig.*",
     "**/Manifest*.*",
     "**/*_Hilt*.class",
-    "**/Hilt_*.class",
+    "**/Hilt_*.class"
+)
+
+private val customCoverageExclusions = listOf(
+    "**/CharacterRemoteDataSourceImpl.class",
+    "**/SaveThumbnailUseCase.class",
+    "**/ImageDownloaderImpl.class",
+    "**/MediaStoreImpl.class"
 )
 
 private fun String.capitalize() = replaceFirstChar {
@@ -77,7 +81,7 @@ internal fun Project.configureJacoco(
                     allJars,
                     allDirectories.map { dirs ->
                         dirs.map { dir ->
-                            myObjFactory.fileTree().setDir(dir).exclude(coverageExclusions)
+                            myObjFactory.fileTree().setDir(dir).exclude(coverageExclusions + customCoverageExclusions)
                         }
                     }
                 )
