@@ -9,7 +9,7 @@ plugins {
 val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
 
 fun getApiKey(propertyKey: String): String =
-    localProperties.getProperty(propertyKey) ?: ""
+    localProperties.getProperty(propertyKey) ?: System.getenv(propertyKey)
 
 android {
     namespace = "com.example.network"
