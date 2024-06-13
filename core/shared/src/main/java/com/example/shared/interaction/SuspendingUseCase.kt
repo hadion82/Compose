@@ -18,7 +18,6 @@ abstract class SuspendingUseCase<in P, out T>(
             }
         }
     } catch (e: Exception) {
-        e.printStackTrace()
         Result.failure(e)
     }
 }

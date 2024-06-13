@@ -1,6 +1,6 @@
 package com.example.bookmarks
 
-internal sealed interface Action {
+sealed interface Action {
 
     sealed interface Navigation: Action {
         data class MoveToDetail(val id: Int): Navigation

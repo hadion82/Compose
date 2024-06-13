@@ -25,7 +25,7 @@ internal class CharacterRepositoryImpl @Inject internal constructor(
     CharacterLocalDataSource by localDataSource,
     CharacterRemoteDataSource by remoteDataSource {
     @OptIn(ExperimentalPagingApi::class)
-    override fun loadPagingData(): Flow<PagingData<com.example.model.CharacterData>> =
+    override fun loadPagingData(): Flow<PagingData<CharacterData>> =
         Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
@@ -38,7 +38,7 @@ internal class CharacterRepositoryImpl @Inject internal constructor(
             }
         ).flow.map { paging -> paging.map(characterDataMapper) }
 
-    override suspend fun getCharacterById(id: Int): com.example.model.CharacterData? =
+    override suspend fun getCharacterById(id: Int): CharacterData? =
         localDataSource.getCharactersById(id)?.let(characterDataMapper)
 
 

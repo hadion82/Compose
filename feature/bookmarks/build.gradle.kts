@@ -31,7 +31,8 @@ dependencies {
     implementation(libs.bumptech.glide.compose)
     implementation(libs.accompanist.permissions)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    implementation(libs.androidx.paging.testing)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
 }

@@ -2,16 +2,15 @@ package com.example.domain
 
 import androidx.paging.testing.asSnapshot
 import com.example.data.repository.BookmarkRepository
-import com.example.domain.data.bookmark.FakeBookmarkRepository
+import com.example.test.data.bookmark.FakeBookmarkRepository
 import com.example.domain.mapper.DataToMarvelMapper
 import com.example.domain.usecase.bookmark.AddBookmarkUseCase
 import com.example.domain.usecase.bookmark.LoadBookmarkUseCase
 import com.example.domain.usecase.bookmark.RemoveBookmarkUseCase
 import com.example.testing.coroutine.MainCoroutineRule
 import com.example.testing.coroutine.runTest
-import org.junit.Test
-
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ErrorCollector
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -29,12 +28,10 @@ import kotlin.test.assertNotNull
 @RunWith(RobolectricTestRunner::class)
 class BookmarkUseCaseTest {
 
-    @get:Rule
-    val collectorRule = ErrorCollector()
-
     private val mainCoroutineRule = MainCoroutineRule()
 
-    private val bookmarkRepository: BookmarkRepository = FakeBookmarkRepository()
+    private val bookmarkRepository: BookmarkRepository =
+        com.example.test.data.bookmark.FakeBookmarkRepository()
 
     @Test
     fun updateBookmark_CheckValueTest() = mainCoroutineRule.runTest{

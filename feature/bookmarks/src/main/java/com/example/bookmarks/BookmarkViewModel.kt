@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class BookmarkViewModel @Inject constructor(
+class BookmarkViewModel @Inject constructor(
     loadBookmarkUseCase: LoadBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
     private val saveThumbnailUseCase: SaveThumbnailUseCase,
@@ -51,9 +51,9 @@ internal class BookmarkViewModel @Inject constructor(
         }
     }
 
-    override fun onBookmarkClick(marvelCharacter: MarvelCharacter) {
+    override fun onBookmarkClick(id: Int, marked: Boolean) {
         viewModelScope.launch {
-            removeBookmarkUseCase(RemoveBookmarkUseCase.Params(marvelCharacter.id))
+            removeBookmarkUseCase(RemoveBookmarkUseCase.Params(id))
                 .onFailure { _message.emit(Action.Message.FailedToRemoveBookmark) }
         }
     }

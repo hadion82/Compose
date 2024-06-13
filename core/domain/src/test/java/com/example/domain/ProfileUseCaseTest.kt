@@ -1,15 +1,15 @@
 package com.example.domain
 
 import com.example.data.repository.CharacterRepository
-import com.example.domain.data.character.FakeCharacterRepository
-import com.example.domain.data.sync.FakeSyncRepository
+import com.example.test.data.character.FakeCharacterRepository
+import com.example.test.data.constant.TestConstant.TEST_ID
+import com.example.test.data.sync.FakeSyncRepository
 import com.example.domain.mapper.DataToMarvelMapper
 import com.example.domain.usecase.profile.GetCharacterProfileUseCase
 import com.example.testing.coroutine.MainCoroutineRule
 import com.example.testing.coroutine.runTest
-import org.junit.Test
-
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ErrorCollector
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -32,7 +32,8 @@ class ProfileUseCaseTest {
 
     private val mainCoroutineRule = MainCoroutineRule()
 
-    private val characterRepository: CharacterRepository = FakeCharacterRepository()
+    private val characterRepository: CharacterRepository =
+        FakeCharacterRepository()
 
     @Test
     fun loadCharacter_CheckValueTest() = mainCoroutineRule.runTest {
@@ -41,10 +42,10 @@ class ProfileUseCaseTest {
             characterRepository,
             DataToMarvelMapper()
         )(
-            GetCharacterProfileUseCase.Params(FakeCharacterRepository.TEST_ID)
+            GetCharacterProfileUseCase.Params(TEST_ID)
         ).getOrNull()
 
         assertNotNull(result)
-        assertEquals(FakeSyncRepository.TEST_ID, result.id)
+        assertEquals(TEST_ID, result.id)
     }
 }

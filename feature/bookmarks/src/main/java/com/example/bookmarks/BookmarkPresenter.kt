@@ -1,16 +1,13 @@
 package com.example.bookmarks
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.graph.ProfileGraph
-import com.example.model.MarvelCharacter
 
 internal interface IntentPresenter {
     fun onThumbnailClick(url: String?)
-    fun onBookmarkClick(marvelCharacter: MarvelCharacter)
+    fun onBookmarkClick(id: Int, marked: Boolean)
 }
 internal interface BookmarkPresenter: IntentPresenter {
     fun onDescriptionClick(id: Int)

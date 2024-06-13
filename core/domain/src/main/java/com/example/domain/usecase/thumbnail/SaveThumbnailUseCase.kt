@@ -11,8 +11,8 @@ import org.apache.commons.io.FilenameUtils
 import javax.inject.Inject
 
 class SaveThumbnailUseCase @Inject constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val repository: ImageStreamRepository
 ) : SuspendingUseCase<SaveThumbnailUseCase.Params, Uri>(dispatcher) {
 

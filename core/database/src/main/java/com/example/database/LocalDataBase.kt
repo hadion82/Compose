@@ -9,6 +9,6 @@ import com.example.database.model.CharacterEntity
     entities = [CharacterEntity::class],
     version = 1
 )
-abstract class LocalDataBase : RoomDatabase() {
+internal abstract class LocalDataBase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
 }

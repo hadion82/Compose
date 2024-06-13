@@ -39,7 +39,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun CharacterContent(
     character: MarvelCharacter,
     onThumbnailClick: (String?) -> Unit,
-    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onBookmarkClick: (id: Int, marked: Boolean) -> Unit,
     onDescriptionClick: (id: Int) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -84,7 +84,7 @@ fun CharacterThumbnail(
 @Composable
 fun CharacterInformation(
     item: MarvelCharacter,
-    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onBookmarkClick: (id: Int, marked: Boolean) -> Unit,
     onDescriptionClick: (id: Int) -> Unit
 ) =
     with(item) {
@@ -103,7 +103,7 @@ fun CharacterInformation(
             IconButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 onClick = {
-                    onBookmarkClick(this@with.copy(mark = !mark))
+                    onBookmarkClick(id, mark)
                 }) {
                 val resId =
                     if (mark) R.drawable.bookmark_activate else R.drawable.bookmark_deactivate

@@ -1,19 +1,17 @@
 package com.example.domain
 
-import com.example.domain.data.character.FakeCharacterRepository
-import com.example.domain.data.sync.FakeSyncRepository
+import com.example.test.data.constant.TestConstant.TEST_ID
+import com.example.test.data.sync.FakeSyncRepository
 import com.example.domain.usecase.character.SyncCharacterUseCase
 import com.example.testing.coroutine.MainCoroutineRule
 import com.example.testing.coroutine.runTest
-import org.junit.Test
-
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ErrorCollector
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -41,6 +39,6 @@ class SyncCharacterUseCaseTest {
         val results = syncRepository.getResults()
 
         assertEquals(1, results.size)
-        assertEquals(FakeSyncRepository.TEST_ID, results.first().id)
+        assertEquals(TEST_ID, results.first().id)
     }
 }

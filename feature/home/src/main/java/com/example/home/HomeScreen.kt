@@ -131,7 +131,7 @@ internal fun CharacterLazyColum(
     pullToRefreshState: PullToRefreshState,
     pagingItems: LazyPagingItems<MarvelCharacter>,
     onThumbnailClick: (String?) -> Unit,
-    onBookmarkClick: (MarvelCharacter) -> Unit,
+    onBookmarkClick: (id: Int, marked: Boolean) -> Unit,
     onDescriptionClick: (id: Int) -> Unit
 ) {
     LazyColumn(

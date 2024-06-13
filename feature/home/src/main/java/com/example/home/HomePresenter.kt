@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 internal interface MainPresenter {
     fun onTitleClick(activity: Activity)
-    fun onBookmarkClick(item: MarvelCharacter)
+    fun onBookmarkClick(id: Int, marked: Boolean)
     fun onThumbnailClick(url: String?)
     fun onDescriptionClick(id: Int)
     fun showMessage(message: String)
@@ -37,10 +37,10 @@ internal class HomePresenterImpl @OptIn(ExperimentalPermissionsApi::class) const
         bookmarksNavigator.navigate(activity)
     }
 
-    override fun onBookmarkClick(item: MarvelCharacter) {
+    override fun onBookmarkClick(id: Int, marked: Boolean) {
         dispatch(
-            if (item.mark) Intention.Event.AddBookmark(item.id)
-            else Intention.Event.RemoveBookmark(item.id)
+            if (marked) Intention.Event.AddBookmark(id)
+            else Intention.Event.RemoveBookmark(id)
         )
     }
 

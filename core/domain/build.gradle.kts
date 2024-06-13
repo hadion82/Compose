@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.shared)
     implementation(projects.core.data)
-    
+    implementation(projects.core.test.dataTest)
+
     implementation(projects.core.testing)
 }

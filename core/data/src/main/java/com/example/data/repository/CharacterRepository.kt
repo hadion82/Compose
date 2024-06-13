@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterRepository {
     suspend fun getIds(ids: List<Int>): List<Int>
     @Throws(Exception::class)
-    fun loadPagingData(): Flow<PagingData<com.example.model.CharacterData>>
+    fun loadPagingData(): Flow<PagingData<CharacterData>>
 
-    suspend fun getCharacterById(id: Int): com.example.model.CharacterData?
+    suspend fun getCharacterById(id: Int): CharacterData?
 
     companion object {
         const val PAGE_SIZE = 20

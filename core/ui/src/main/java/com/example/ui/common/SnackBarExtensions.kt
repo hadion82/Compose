@@ -16,7 +16,7 @@ fun SnackbarHostState.launch(
     scope.launch { block() }
 
 @Composable
-fun <T> SnackbarHostState.showSnackBarMessage(
+fun <T: Any> SnackbarHostState.showSnackBarMessage(
     messageState: State<T?>,
     duration: SnackbarDuration = SnackbarDuration.Short,
     block: @Composable (T) -> String

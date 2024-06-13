@@ -59,7 +59,7 @@ internal fun TitleBar() {
 internal fun BookmarkContents(
     pagingDataState: State<Flow<PagingData<MarvelCharacter>>?>,
     onThumbnailClick: (url: String?) -> Unit,
-    onBookmarkClick: (item: MarvelCharacter) -> Unit,
+    onBookmarkClick: (id: Int, marked: Boolean) -> Unit,
     onDescriptionClick: (id: Int) -> Unit
 ) {
     val pagingDataStateValue by pagingDataState

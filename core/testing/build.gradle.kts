@@ -19,9 +19,9 @@ dependencies {
 
 //    api(libs.androidx.test.runner)
     api(libs.kotlinx.coroutines.test)
-    api(libs.robolectric)
-    api(libs.mockito.inline)
-    api(libs.mockito.kotlin2)
+    testApi(libs.robolectric)
+    testApi(libs.mockito.inline)
+    testApi(libs.mockito.kotlin2)
 
     implementation(libs.androidx.dataStore.preferences)
 

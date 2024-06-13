@@ -48,7 +48,9 @@ dependencies {
     implementation(projects.core.shared)
     implementation(projects.core.database)
     implementation(projects.core.network)
+    implementation(projects.core.fio)
     implementation(projects.core.security)
     implementation(projects.core.datastore.preferences)
     implementation(projects.core.testing)
+    implementation(projects.core.test.fioTest)
 }

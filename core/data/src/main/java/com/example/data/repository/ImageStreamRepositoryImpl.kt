@@ -3,8 +3,8 @@ package com.example.data.repository
 import android.content.Context
 import android.net.Uri
 import com.bumptech.glide.Glide
-import com.example.data.media.ImageDownloader
-import com.example.data.media.MediaStore
+import com.example.fio.media.ImageDownloader
+import com.example.fio.media.MediaStore
 import com.example.data.repository.ImageStreamRepository
 import com.example.shared.mediator.MediaUtils
 import javax.inject.Inject

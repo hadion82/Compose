@@ -7,8 +7,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import timber.log.Timber
 import javax.inject.Inject
 
-private const val PAGE_LIMIT = 20
-
 class SyncCharacterUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher,
     private val syncRepository: SyncRepository
@@ -21,4 +19,8 @@ class SyncCharacterUseCase @Inject constructor(
     }
 
     class Params(val offset: Int)
+
+    companion object {
+        const val PAGE_LIMIT = 20
+    }
 }

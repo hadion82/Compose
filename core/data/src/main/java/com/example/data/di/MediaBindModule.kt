@@ -4,10 +4,10 @@ import com.example.data.datasource.local.CharacterLocalDataSource
 import com.example.data.datasource.local.CharacterLocalDataSourceImpl
 import com.example.data.datasource.remote.CharacterRemoteDataSource
 import com.example.data.datasource.remote.CharacterRemoteDataSourceImpl
-import com.example.data.media.ImageDownloader
-import com.example.data.media.ImageDownloaderImpl
-import com.example.data.media.MediaStore
-import com.example.data.media.MediaStoreImpl
+import com.example.fio.media.ImageDownloader
+import com.example.fio.media.ImageDownloaderImpl
+import com.example.fio.media.MediaStore
+import com.example.fio.media.MediaStoreImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,12 +22,12 @@ abstract class MediaBindModule {
     @Singleton
     @Binds
     internal abstract fun bindImageDownloader(
-        impl: ImageDownloaderImpl
-    ): ImageDownloader
+        impl: com.example.fio.media.ImageDownloaderImpl
+    ): com.example.fio.media.ImageDownloader
 
     @Singleton
     @Binds
     internal abstract fun bindMediaStore(
-        impl: MediaStoreImpl
-    ): MediaStore
+        impl: com.example.fio.media.MediaStoreImpl
+    ): com.example.fio.media.MediaStore
 }

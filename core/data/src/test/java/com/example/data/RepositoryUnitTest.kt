@@ -1,15 +1,14 @@
 package com.example.data
 
 import android.content.Context
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.data.datasorce.CharacterRemoteTestingDataSource
 import com.example.data.datasource.local.CharacterLocalDataSource
 import com.example.data.datasource.local.CharacterLocalDataSourceImpl
 import com.example.data.datasource.remote.CharacterRemoteDataSource
-import com.example.data.mapper.EntityToDataMapper
 import com.example.data.mapper.DataToEntityMapper
 import com.example.data.mapper.DataToUpdatingEntityMapper
+import com.example.data.mapper.EntityToDataMapper
 import com.example.data.mapper.RemoteToDataMapper
 import com.example.data.mapper.RemoteToResponseMapper
 import com.example.data.mediator.CharacterMediator
@@ -19,7 +18,7 @@ import com.example.data.repository.CharacterRepository
 import com.example.data.repository.CharacterRepositoryImpl
 import com.example.data.repository.SyncRepository
 import com.example.data.repository.SyncRepositoryImpl
-import com.example.database.LocalDataBase
+import com.example.database.MemoryDatabase
 import com.example.database.dao.CharacterDao
 import com.example.datastore.preferences.PreferencesDatastore
 import com.example.testing.coroutine.MainCoroutineRule
@@ -46,7 +45,7 @@ internal abstract class RepositoryUnitTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var database: LocalDataBase
+    private lateinit var database: MemoryDatabase
 
     protected lateinit var bookmarkRepository: BookmarkRepository
 
@@ -74,9 +73,7 @@ internal abstract class RepositoryUnitTest {
     @Before
     fun setUp() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        database = Room.inMemoryDatabaseBuilder(
-            context, LocalDataBase::class.java
-        ).build()
+        database = MemoryDatabase.create(context)
         characterDao = database.characterDao()
         characterLocalDataSource = CharacterLocalDataSourceImpl(characterDao)
         characterRemoteDataSource = CharacterRemoteTestingDataSource(remoteToResponseMapper)

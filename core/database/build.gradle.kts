@@ -31,5 +31,4 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.paging.testing)
-//    implementation(projects.core.testing)
 }
