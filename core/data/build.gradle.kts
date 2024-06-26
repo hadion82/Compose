@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.timber)
 
+    testImplementation(libs.robolectric)
     testImplementation(libs.androidx.paging.testing)
 
     /*Module*/

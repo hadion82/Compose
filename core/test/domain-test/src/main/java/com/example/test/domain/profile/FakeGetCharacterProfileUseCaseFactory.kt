@@ -1,8 +1,8 @@
 package com.example.test.domain.profile
 
-import com.example.test.data.character.FakeCharacterRepository
 import com.example.domain.mapper.DataToMarvelMapper
 import com.example.domain.usecase.profile.GetCharacterProfileUseCase
+import com.example.test.data.character.FakeCharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
 interface FakeGetCharacterProfileUseCaseFactory {
@@ -11,7 +11,7 @@ interface FakeGetCharacterProfileUseCaseFactory {
         override fun invoke(dispatcher: CoroutineDispatcher): GetCharacterProfileUseCase =
             GetCharacterProfileUseCase(
                 dispatcher,
-                com.example.test.data.character.FakeCharacterRepository(), DataToMarvelMapper()
+                FakeCharacterRepository(), DataToMarvelMapper()
             )
     }
 }

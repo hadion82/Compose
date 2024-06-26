@@ -8,6 +8,6 @@ interface FakeLoadBookmarkUseCaseFactory {
 
     companion object : () -> LoadBookmarkUseCase {
         override fun invoke(): LoadBookmarkUseCase =
-            LoadBookmarkUseCase(com.example.test.data.bookmark.FakeBookmarkRepository(), DataToMarvelMapper())
+            LoadBookmarkUseCase(FakeBookmarkRepository(), DataToMarvelMapper())
     }
 }

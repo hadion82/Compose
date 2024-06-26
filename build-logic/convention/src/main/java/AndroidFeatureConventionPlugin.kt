@@ -62,6 +62,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("androidTestImplementation", libs.findLibrary("androidx.lifecycle.runtime.testing").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.compose.ui.test.junit4").get())
                 add("debugImplementation", libs.findLibrary("androidx.compose.ui.test.manifest").get())
+                add("testImplementation", libs.findLibrary("robolectric").get())
             }
         }
     }

@@ -33,7 +33,6 @@ import com.example.ui.common.showSnackBarMessage
 import com.example.design.theme.ComposeTheme
 import com.example.design.theme.DefaultSurface
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 
 @Composable
 internal fun BookmarkRoute(navHostController: NavController, viewModel: BookmarkViewModel = hiltViewModel()) {
@@ -45,7 +44,7 @@ internal fun BookmarkRoute(navHostController: NavController, viewModel: Bookmark
 
 @Composable
 internal fun TitleBar() {
-    Box(Modifier.fillMaxWidth().testTag("bookmark_bar")) {
+    Box(Modifier.fillMaxWidth().testTag(BookmarksTag.Bar.BOOKMARK_BAR)) {
         Text(
             text = stringResource(id = R.string.label_bookmarks),
             modifier = Modifier
@@ -66,7 +65,7 @@ internal fun BookmarkContents(
     val pagingItems = pagingDataStateValue?.collectAsLazyPagingItems() ?: return
     LazyColumn(
         contentPadding = PaddingValues(16.dp, 8.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().testTag(BookmarksTag.Content.BOOKMARK_COLUMN)
     ) {
         items(
             count = pagingItems.itemCount,
@@ -107,7 +106,6 @@ internal fun BookmarkScreen(
     uiState: BookmarkComposableUiState,
     presenter: BookmarkPresenter
 ) {
-    Timber.d("BookmarkScreen")
     ComposeTheme {
         DefaultSurface {
             Scaffold(snackbarHost = {

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -45,7 +46,7 @@ internal fun ProfileRoute(id: Int, viewModel: ProfileViewModel = hiltViewModel()
 
 @Composable
 internal fun TitleBar() {
-    Box(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth().testTag(ProfileTag.Bar.PROFILE_BAR)) {
         Text(
             text = stringResource(id = R.string.label_profile),
             modifier = Modifier
@@ -84,7 +85,9 @@ fun CharacterThumbnail(
         contentDescription = description,
         modifier = Modifier
             .size(imageSize)
-            .padding(10.dp),
+            .padding(10.dp)
+            .testTag(ProfileTag.Profile.PROFILE_THUMBNAIL + character.id)
+        ,
     ) {
         it.thumbnail(requestBuilder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -98,6 +101,7 @@ fun CharacterInformation(item: MarvelCharacter) =
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.align(Alignment.CenterStart)
+                    .testTag(ProfileTag.Profile.PROFILE_INFORMATION + item.id)
             ) {
                 val unknownString = stringResource(com.example.ui.R.string.label_unknown)
                 val name = if(name.isNullOrBlank()) unknownString else name!!
@@ -131,8 +135,8 @@ internal fun SnackBarMessage(
 internal fun ProfileScreen(
     uiState: ProfileComposableUiState
 ) {
-    com.example.design.theme.ComposeTheme {
-        com.example.design.theme.DefaultSurface {
+    ComposeTheme {
+        DefaultSurface {
             Scaffold(snackbarHost = {
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->

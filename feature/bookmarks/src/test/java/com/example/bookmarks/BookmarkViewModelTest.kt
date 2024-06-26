@@ -3,6 +3,7 @@ package com.example.bookmarks
 import android.content.Context
 import androidx.paging.testing.asSnapshot
 import androidx.test.core.app.ApplicationProvider
+import com.example.test.data.bookmark.FakeBookmarkRepository
 import com.example.test.domain.bookmark.FakeLoadBookmarkUseCaseFactory
 import com.example.test.domain.bookmark.FakeRemoveBookmarkUseCaseFactory
 import com.example.test.data.constant.TestConstant.TEST_ID
@@ -36,7 +37,7 @@ class BookmarkViewModelTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         bookmarkViewModel = BookmarkViewModel(
             FakeLoadBookmarkUseCaseFactory(),
-            FakeRemoveBookmarkUseCaseFactory(mainCoroutineRule.testDispatcher),
+            FakeRemoveBookmarkUseCaseFactory(mainCoroutineRule.testDispatcher, FakeBookmarkRepository()),
             FakeSaveThumbnailUseCaseFactory(context, mainCoroutineRule.testDispatcher)
         )
     }

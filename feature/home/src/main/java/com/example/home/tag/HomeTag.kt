@@ -1,5 +1,12 @@
 package com.example.home.tag
 
 object HomeTag {
-    const val BUTTON_GO_BOOKMARK = "BUTTON_GO_BOOKMARK"
+
+    object Bar {
+        const val OPEN_BOOKMARK = "open_bookmark"
+    }
+
+    object Content {
+        const val CHARACTER_LAZY_COLUMN = "character_lazy_column"
+    }
 }

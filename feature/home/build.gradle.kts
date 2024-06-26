@@ -33,8 +33,7 @@ dependencies {
 
     implementation(libs.androidx.work.ktx)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
+    implementation(libs.androidx.paging.testing)
 
     /*Module*/
     implementation(projects.work)

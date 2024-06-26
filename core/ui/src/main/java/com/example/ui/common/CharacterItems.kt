@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
@@ -31,6 +32,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.model.MarvelCharacter
 import com.example.shared.extensions.pixel
 import com.example.ui.R
+import com.example.ui.test.CommonTag
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -73,7 +75,9 @@ fun CharacterThumbnail(
             .padding(10.dp)
             .clickable {
                 onClick(thumbnail)
-            },
+            }
+            .testTag(CommonTag.Character.THUMBNAIL + character.id)
+        ,
     ) {
         it.thumbnail(requestBuilder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -92,6 +96,7 @@ fun CharacterInformation(
             Column(
                 modifier = Modifier.align(Alignment.CenterStart)
                     .clickable(true) { onDescriptionClick(item.id) }
+                    .testTag(CommonTag.Character.INFORMATION + item.id)
             ) {
                 Text(text = name ?: stringResource(id = R.string.label_unknown))
                 Text(text = stringResource(id = R.string.url_count, urlCount))

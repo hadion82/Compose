@@ -25,7 +25,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,7 +54,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
 internal class HomeScopedDispatcher(
     intent: MutableSharedFlow<Intention>,
@@ -78,7 +76,6 @@ internal fun HomeRoute(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    Timber.d("HomeRoute")
     HomeScreen(
         ComposeHomeUiState(viewModel.state()),
         ComposeHomePresenter(viewModel.intents, navigator, navController)
@@ -89,10 +86,10 @@ internal fun HomeRoute(
 @Composable
 internal fun HomeContent(
     mainState: State<Flow<PagingData<MarvelCharacter>>?>,
-    presenter: MainPresenter
+    presenter: MainPresenter,
+    enableLoading: Boolean
 ) {
-    val pagingData by mainState
-    val pagingItems = pagingData?.collectAsLazyPagingItems() ?: return
+    val pagingItems = mainState.value?.collectAsLazyPagingItems() ?: return
     val pullToRefreshState = rememberPullToRefreshState()
     val scaleFraction = if (pullToRefreshState.isRefreshing) 1f else
         LinearOutSlowInEasing.transform(pullToRefreshState.progress).coerceIn(0f, 1f)
@@ -107,18 +104,21 @@ internal fun HomeContent(
             onBookmarkClick = presenter::onBookmarkClick,
             onDescriptionClick = presenter::onDescriptionClick
         )
-        AppendIndicator(
-            loadState = pagingItems.loadState.append,
-            showMessage = presenter::showMessage
-        )
-        RefreshIndicator(
-            loadState = pagingItems.loadState.refresh,
-            pullToRefreshState = pullToRefreshState,
-            modifier = Modifier.align(Alignment.Center),
-            showMessage = presenter::showMessage
-        )
+        if(enableLoading) {
+            AppendIndicator(
+                loadState = pagingItems.loadState.append,
+                showMessage = presenter::showMessage
+            )
+            RefreshIndicator(
+                loadState = pagingItems.loadState.refresh,
+                pullToRefreshState = pullToRefreshState,
+                modifier = Modifier.align(Alignment.Center),
+                showMessage = presenter::showMessage
+            )
+        }
         PullToRefreshContainer(
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier
+                .align(Alignment.TopCenter)
                 .graphicsLayer(scaleX = scaleFraction, scaleY = scaleFraction),
             state = pullToRefreshState
         )
@@ -136,7 +136,11 @@ internal fun CharacterLazyColum(
 ) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp, 8.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(
+                HomeTag.Content.CHARACTER_LAZY_COLUMN
+            )
     ) {
         if (pullToRefreshState.isRefreshing.not()) {
             items(
@@ -227,7 +231,7 @@ internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(4.dp, 2.dp)
-                .testTag(HomeTag.BUTTON_GO_BOOKMARK),
+                .testTag(HomeTag.Bar.OPEN_BOOKMARK),
             onClick = { onTitleClick(activity) }
         ) {
             Text(text = stringResource(id = R.string.label_bookmark))
@@ -237,7 +241,7 @@ internal fun TitleBar(onTitleClick: (Activity) -> Unit) {
 
 @Composable
 internal fun HomeScreen(
-    uiState: HomeComposableUiState, presenter: MainPresenter
+    uiState: HomeComposableUiState, presenter: MainPresenter, enableLoading: Boolean = true
 ) {
     ComposeTheme {
         DefaultSurface {
@@ -245,12 +249,13 @@ internal fun HomeScreen(
                 SnackbarHost(uiState.snackBarHostState)
             }) { paddingValues ->
                 Column(
-                    Modifier.fillMaxSize()
+                    Modifier
+                        .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.safeDrawing)
                         .padding(paddingValues)
                 ) {
                     TitleBar(presenter::onTitleClick)
-                    HomeContent(uiState.pagingData, presenter)
+                    HomeContent(uiState.pagingData, presenter, enableLoading)
                     SnackBarMessage(uiState.message, uiState.snackBarHostState)
                 }
             }
