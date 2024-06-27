@@ -39,7 +39,8 @@ private val coverageExclusions = listOf(
     "**/BuildConfig.*",
     "**/Manifest*.*",
     "**/*_Hilt*.class",
-    "**/Hilt_*.class"
+    "**/Hilt_*.class",
+    "**/*InstanceHolder.class"
 )
 
 private val customCoverageExclusions = listOf(

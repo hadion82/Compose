@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class RemoteToDataMapper @Inject constructor(): Mapper<Character, CharacterData> {
     override fun invoke(data: Character): CharacterData =
-        com.example.model.CharacterData(
+        CharacterData(
             id = data.id ?: -1,
             name = data.name,
             description = data.description,

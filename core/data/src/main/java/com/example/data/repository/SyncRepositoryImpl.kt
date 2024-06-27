@@ -18,7 +18,6 @@ class SyncRepositoryImpl @Inject internal constructor(
     CharacterRemoteDataSource by remoteDataSource {
 
     override suspend fun updateCharacters(results: List<CharacterData>) {
-        Timber.d("Mediator data : $results")
         val responseIds = results.map { it.id }
         val savedIds = getIds(responseIds)
         val (saved, new) = results.partition { savedIds.contains(it.id) }

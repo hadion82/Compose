@@ -23,9 +23,6 @@ import kotlin.test.assertEquals
 @RunWith(RobolectricTestRunner::class)
 class SyncCharacterUseCaseTest {
 
-    @get:Rule
-    val collectorRule = ErrorCollector()
-
     private val mainCoroutineRule = MainCoroutineRule()
 
     private val syncRepository = FakeSyncRepository()

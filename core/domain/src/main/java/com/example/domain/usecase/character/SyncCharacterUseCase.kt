@@ -13,7 +13,6 @@ class SyncCharacterUseCase @Inject constructor(
 ) : SuspendingUseCase<SyncCharacterUseCase.Params, Unit>(dispatcher) {
 
     override suspend fun execute(params: Params) {
-        Timber.d("execute offset : ${params.offset}")
         val characters = syncRepository.getCharacters(params.offset, PAGE_LIMIT)
         syncRepository.updateCharacters(characters.results)
     }

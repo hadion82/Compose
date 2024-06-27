@@ -30,15 +30,12 @@ internal class CharacterMediator @Inject internal constructor(
             endOfPaginationReached = true
         )
 
-        Timber.d("Mediator key : $pagingKey")
-
         return try {
             val reached = updateResource(pagingKey)
             MediatorResult.Success(
                 endOfPaginationReached = reached
             )
         } catch (e: Exception) {
-            Timber.d("Mediator e : $e")
             MediatorResult.Error(e)
         }
     }

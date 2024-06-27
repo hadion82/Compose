@@ -5,9 +5,9 @@ import com.example.database.model.CharacterEntity
 import com.example.shared.mapper.Mapper
 import javax.inject.Inject
 
-class EntityToDataMapper @Inject constructor(): Mapper<CharacterEntity, com.example.model.CharacterData> {
-    override fun invoke(data: CharacterEntity): com.example.model.CharacterData =
-        com.example.model.CharacterData(
+class EntityToDataMapper @Inject constructor(): Mapper<CharacterEntity, CharacterData> {
+    override fun invoke(data: CharacterEntity): CharacterData =
+        CharacterData(
             id = data.id,
             name = data.name,
             description = data.description,

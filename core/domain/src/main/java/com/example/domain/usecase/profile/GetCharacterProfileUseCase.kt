@@ -15,8 +15,9 @@ class GetCharacterProfileUseCase @Inject constructor(
 ) : SuspendingUseCase<GetCharacterProfileUseCase.Params, MarvelCharacter>(dispatcher) {
 
     override suspend fun execute(params: Params): MarvelCharacter {
-        return characterRepository.getCharacterById(params.id)?.let(mapper)
+        val item = characterRepository.getCharacterById(params.id)
             ?: throw NoSuchElementException("No matching object found for id")
+        return item.let(mapper)
     }
 
     data class Params(val id: Int)

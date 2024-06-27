@@ -16,6 +16,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -26,9 +28,6 @@ import kotlin.test.assertNotNull
 @Config(manifest = Config.NONE)
 @RunWith(RobolectricTestRunner::class)
 class ProfileUseCaseTest {
-
-    @get:Rule
-    val collectorRule = ErrorCollector()
 
     private val mainCoroutineRule = MainCoroutineRule()
 
@@ -47,5 +46,18 @@ class ProfileUseCaseTest {
 
         assertNotNull(result)
         assertEquals(TEST_ID, result.id)
+    }
+
+    @Test
+    fun loadInvalidIdCharacter_CheckException() = mainCoroutineRule.runTest {
+        val result = GetCharacterProfileUseCase(
+            mainCoroutineRule.testDispatcher,
+            characterRepository,
+            DataToMarvelMapper()
+        )(
+            GetCharacterProfileUseCase.Params(-1)
+        ).getOrNull()
+
+        assertNull(result)
     }
 }

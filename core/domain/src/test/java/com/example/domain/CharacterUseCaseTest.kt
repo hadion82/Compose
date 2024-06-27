@@ -27,9 +27,6 @@ import kotlin.test.assertNotNull
 @RunWith(RobolectricTestRunner::class)
 class CharacterUseCaseTest {
 
-    @get:Rule
-    val collectorRule = ErrorCollector()
-
     private val mainCoroutineRule = MainCoroutineRule()
 
     private val characterRepository: CharacterRepository =

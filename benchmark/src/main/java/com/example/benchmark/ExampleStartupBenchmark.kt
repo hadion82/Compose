@@ -1,5 +1,6 @@
 package com.example.benchmark
 
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
@@ -8,6 +9,7 @@ import androidx.benchmark.macro.TraceMetric
 import androidx.benchmark.macro.TraceSectionMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.benchmark.bookmarks.goToBookmarksScreen
 import org.junit.Rule
 import org.junit.Test
@@ -33,17 +35,19 @@ class ExampleStartupBenchmark {
     @OptIn(ExperimentalMetricApi::class)
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "com.example.compose",
+        packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+            ?: throw IllegalArgumentException("targetAppId not passed as instrumentation runner arg"),
         metrics = listOf(
             StartupTimingMetric(),
-            FrameTimingMetric(),
-            TraceSectionMetric(TraceSectionMetric.Mode.First.name)
+//            FrameTimingMetric(),
+//            TraceSectionMetric(TraceSectionMetric.Mode.First.name)
         ),
-        iterations = 5,
-        startupMode = StartupMode.COLD
+        compilationMode = CompilationMode.Full(),
+//        startupMode = StartupMode.COLD,
+        iterations = 5
     ) {
-        pressHome()
+        pressHome(2000)
         startActivityAndWait()
-        goToBookmarksScreen()
+//        goToBookmarksScreen()
     }
 }

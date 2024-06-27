@@ -48,7 +48,7 @@ class ProfileScreenTest {
             )
         }
         profileViewModel.getCharacterProfile(TEST_ID)
-        delay(5_000)
+        delay(2000)
         val testId = profileViewModel.profileData.value?.id
 
         composeRule.onNodeWithTag(ProfileTag.Bar.PROFILE_BAR).assertExists()
